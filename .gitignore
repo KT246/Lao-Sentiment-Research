@@ -1,0 +1,40 @@
+# 1. Data (Không bao giờ đẩy data lên Git)
+data/*.csv
+data/*.json
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# 2. Model Outputs & Checkpoints
+outputs/
+checkpoint-*/
+runs/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# 3. Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 4. Git Flow & Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# 5. OS & IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# 6. Python Packaging
+build/
+dist/
+*.egg-info/
+*.egg

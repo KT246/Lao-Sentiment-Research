@@ -1,0 +1,14 @@
+torch
+transformers
+datasets
+evaluate
+scikit-learn
+pandas
+numpy
+peft
+accelerate
+laonlp
+tqdm
+psutil
+matplotlib
+seaborn
