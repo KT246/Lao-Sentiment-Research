@@ -14,13 +14,45 @@ from transformers import (
     TrainerCallback,
     DataCollatorWithPadding
 )
+from transformers.trainer_callback import PrinterCallback
 
-class TimeLogCallback(TrainerCallback):
+class TerminalTableCallback(TrainerCallback):
+    """Callback tạo bảng Log đẹp mắt trên Terminal."""
+    def __init__(self):
+        self.start_time = None
+        self.start_str = ""
+        self.metrics_cache = {}
+        self.header_printed = False
+
     def on_epoch_begin(self, args, state, control, **kwargs):
-        self.start = time.time()
-        print(f"\n⏱️  Epoch {int(state.epoch) + 1} Start: {datetime.datetime.now().strftime('%H:%M:%S')}")
-    def on_epoch_end(self, args, state, control, **kwargs):
-        print(f"✅ Epoch {int(state.epoch)} End - Duration: {time.time() - self.start:.2f}s")
+        self.start_time = time.time()
+        self.start_str = datetime.datetime.now().strftime('%H:%M:%S')
+
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if logs is None:
+            return
+        
+        self.metrics_cache.update(logs)
+        
+        # Đợi đến khi có eval_loss (khi evaluate ở cuối epoch) mới in table row
+        if 'eval_loss' in logs:
+            if not self.header_printed:
+                print("-" * 95)
+                print(f"{'Epoch':>5} | {'Training Loss':>13} | {'Validation Loss':>15} | {'Accuracy':>8} | {'F1 Macro':>8} | {'Start':>8} | {'End - Duration':>14}")
+                print("-" * 95)
+                self.header_printed = True
+            
+            epoch = int(round(state.epoch))
+            t_loss = self.metrics_cache.get('loss', 0.0)
+            v_loss = logs.get('eval_loss', 0.0)
+            acc = logs.get('eval_accuracy', 0.0)
+            f1 = logs.get('eval_f1_macro', 0.0)
+            
+            duration = time.time() - self.start_time if self.start_time else 0.0
+            
+            print(f"{epoch:5d} | {t_loss:13.6f} | {v_loss:15.6f} | {acc:8.6f} | {f1:8.6f} | {self.start_str:>8} | {duration:13.2f}s")
+            
+            self.metrics_cache = {}
 
 class EpochLoggingCallback(TrainerCallback):
     """Callback lưu metrics ra file JSON sau mỗi epoch."""
@@ -104,7 +136,8 @@ def setup_trainer(
         save_total_limit=2,
         fp16=torch.cuda.is_available(), # Tăng tốc Train với GPU
         logging_dir=f"{output_dir}/logs",
-        logging_steps=10,
+        logging_strategy="epoch",  # Chỉ log ở cuối epoch để gom vào bảng
+        report_to="none",          # Tắt các report mặc định (JSON/WANDB)
         push_to_hub=False,
     )
 
@@ -120,10 +153,16 @@ def setup_trainer(
         data_collator=data_collator,
         compute_metrics=compute_metrics,
         callbacks=[
-            TimeLogCallback(),
+            TerminalTableCallback(),
             EpochLoggingCallback(output_dir=output_dir)
         ],
         class_weights=class_weights
     )
+
+    # Ẩn luồng log JSON mặc định của Hugging Face
+    try:
+        trainer.remove_callback(PrinterCallback)
+    except Exception:
+        pass
 
     return trainer, model
