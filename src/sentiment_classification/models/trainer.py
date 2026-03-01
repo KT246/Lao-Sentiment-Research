@@ -37,8 +37,7 @@ class TerminalTableCallback(TrainerCallback):
         # Đợi đến khi có eval_loss (khi evaluate ở cuối epoch) mới in table row
         if 'eval_loss' in logs:
             if not self.header_printed:
-                print("-" * 95)
-                print(f"{'Epoch':>5} | {'Training Loss':>13} | {'Validation Loss':>15} | {'Accuracy':>8} | {'F1 Macro':>8} | {'Start':>8} | {'End - Duration':>14}")
+                print(f"\n{'Epoch':>5} | {'Training Loss':>13} | {'Validation Loss':>15} | {'Accuracy':>8} | {'F1 Macro':>8} | {'Start':>8} | {'End - Duration':>14}")
                 print("-" * 95)
                 self.header_printed = True
             
@@ -91,11 +90,12 @@ class WeightedTrainer(Trainer):
             
         return (loss, outputs) if return_outputs else loss
 
+# Tải metrics 1 lần duy nhất ở ngoài (global) để không in script download liên tục
+metric_acc = evaluate.load("accuracy")
+metric_f1 = evaluate.load("f1")
+
 def compute_metrics(eval_pred):
     """Tính F1-Macro và Accuracy."""
-    metric_acc = evaluate.load("accuracy")
-    metric_f1 = evaluate.load("f1")
-    
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis=-1)
     
@@ -138,6 +138,7 @@ def setup_trainer(
         logging_dir=f"{output_dir}/logs",
         logging_strategy="epoch",  # Chỉ log ở cuối epoch để gom vào bảng
         report_to="none",          # Tắt các report mặc định (JSON/WANDB)
+        disable_tqdm=True,         # Ẩn thanh tiến trình mặc định
         push_to_hub=False,
     )
 
