@@ -121,28 +121,26 @@ def setup_trainer(
         num_labels=num_labels
     )
 
-    # CẤU HÌNH ĐÃ SỬA CHUẨN: eval_strategy thay cho evaluation_strategy
     training_args = TrainingArguments(
         output_dir=output_dir,
         eval_strategy="epoch",
         save_strategy="epoch",
-        learning_rate=2e-5,
+        learning_rate=1e-5,               # 🟢 ĐÃ GIẢM: Tốc độ học chậm lại để chống vẹt
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
         num_train_epochs=epochs,
-        weight_decay=0.01,
+        weight_decay=0.05,                # 🟢 ĐÃ TĂNG: Phạt nặng hơn nếu model cố tình học vẹt
         load_best_model_at_end=True,
         metric_for_best_model="f1_macro",
         save_total_limit=2,
-        fp16=torch.cuda.is_available(), # Tăng tốc Train với GPU
+        fp16=torch.cuda.is_available(), 
         logging_dir=f"{output_dir}/logs",
-        logging_strategy="epoch",  # Chỉ log ở cuối epoch để gom vào bảng
-        report_to="none",          # Tắt các report mặc định (JSON/WANDB)
-        disable_tqdm=True,         # Ẩn thanh tiến trình mặc định
+        logging_strategy="epoch",  
+        report_to="none",          
+        disable_tqdm=True,         
         push_to_hub=False,
     )
 
-    # Tối ưu RAM cho GPU
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
     trainer = WeightedTrainer(
@@ -155,6 +153,7 @@ def setup_trainer(
         compute_metrics=compute_metrics,
         callbacks=[
             TerminalTableCallback(),
+            EarlyStoppingCallback(early_stopping_patience=7), # 🟢 ĐÃ THÊM: Dừng sớm nếu 7 vòng không tốt lên
             EpochLoggingCallback(output_dir=output_dir)
         ],
         class_weights=class_weights
