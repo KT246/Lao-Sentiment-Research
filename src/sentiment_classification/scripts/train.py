@@ -15,9 +15,9 @@ logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(description="Train Lao Sentiment Analysis Model")
-    parser.add_argument("--model_name", type=str, default="w11wo/lao-roberta-base", help="Pre-trained model name/path")
+    parser.add_argument("--model_name", type=str, default="xlm-roberta-base", help="Pre-trained model name/path")
     parser.add_argument("--data_dir", type=str, default="data/processed", help="Directory containing train.csv and val.csv")
-    parser.add_argument("--output_dir", type=str, default="outputs/v1-lao-roberta", help="Where to save the artifacts")
+    parser.add_argument("--output_dir", type=str, default="outputs/v1-xlm-roberta", help="Where to save the artifacts")
     parser.add_argument("--epochs", type=int, default=25, help="Number of training epochs")
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size for training and evaluation")
     parser.add_argument("--num_labels", type=int, default=2, help="Number of sentiment classes (e.g., 2 for Binary Classification)")
