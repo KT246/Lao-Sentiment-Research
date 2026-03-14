@@ -5,6 +5,7 @@ evaluate
 scikit-learn
 pandas
 numpy
+sympy==1.12
 peft
 accelerate
 laonlp

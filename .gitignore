@@ -1,12 +1,16 @@
-# 1. Data (Không bao giờ đẩy data lên Git)
+# 1. Data (never commit datasets)
 data/*.csv
 data/*.json
-data/raw/*
-data/processed/*
+data/raw/
+data/processed/
+data/interim/
+data/external/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+!data/interim/.gitkeep
+!data/external/.gitkeep
 
-# 2. Model Outputs & Checkpoints
+# 2. Model outputs, checkpoints, artifacts
 outputs/
 checkpoint-*/
 runs/
@@ -14,26 +18,45 @@ runs/
 *.bin
 *.pt
 *.pth
+*.ckpt
+*.onnx
+*.npz
+*.joblib
+*.pkl
+*.pickle
 
-# 3. Python Cache
+# 3. Experiment tracking
+wandb/
+mlruns/
+lightning_logs/
+tensorboard/
+
+# 4. Python cache and build artifacts
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
 
-# 4. Git Flow & Environments
+# 5. Environments and local config
 .env
 .venv
 env/
 venv/
 ENV/
+.python-version
 
-# 5. OS & IDE
+# 6. OS and IDE files
 .idea/
 .vscode/
+.ipynb_checkpoints/
 *.swp
 .DS_Store
+Thumbs.db
 
-# 6. Python Packaging
+# 7. Python packaging
 build/
 dist/
 *.egg-info/

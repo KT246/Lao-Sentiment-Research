@@ -1,76 +1,142 @@
-# 🇱🇦 Lao Sentiment Analysis (E-commerce)
+# Lao Sentiment Research
 
-## Overview
-This project provides a complete, production-ready **MLOps Pipeline** for building Sentiment Analysis models specifically tailored for the **Lao language** (e.g., E-commerce reviews). 
+This repository contains the training pipeline for Lao sentiment classification with three model families and three training strategies.
 
-The codebase is built on top of the robust PyTorch and Hugging Face ecosystems (`Transformers`, `Datasets`, `Evaluate`), and integrates best MLOps practices such as dynamic padding, custom class weight handling for imbalanced data, and beautiful tabular terminal logs.
+## What is implemented
 
-## 🌟 Key Features
-- **Lao Language Support**: Defaults to utilizing the `w11wo/lao-roberta-base` pre-trained model.
-- **Handling Imbalanced Data**: A custom `WeightedTrainer` automatically computes and applies class weights to the CrossEntropyLoss function to ensure the model doesn't overfit to the majority class.
-- **Beautiful Terminal Logs**: Unlike default Hugging Face spammy JSON logs, this project features a custom `TerminalTableCallback` that outputs a clean, Jupyter-Notebook-style ASCII table for every Epoch (Tracking `Accuracy`, `F1-Macro`, `Loss`, and `Duration`).
-- **Production Reporting**: At the end of the 25-Epoch fixed training cycle, the pipeline automatically predicts the validation set and exports a highly detailed `validation_results_detailed.csv` (containing predicted labels, confidence scores, and boolean correct/incorrect flags) for external review.
+- Models:
+  - `xlm-roberta` -> `xlm-roberta-base`
+  - `mbert` -> `bert-base-multilingual-cased`
+  - `mbert-lao` -> `w11wo/lao-roberta-base` (current placeholder for Lao-specific setup)
+- Training modes:
+  - `full-finetuning`
+  - `lora`
+  - `cross-validation` (`K=3`)
+- During training:
+  - Best model is selected by `eval_loss` on validation split
+  - No F1/Accuracy metrics are computed during training
+  - Runtime artifacts are saved (epoch timing, hardware info, predictions)
 
----
+## Project structure
 
-## 🛠️ Project Structure
 ```text
 Lao-Sentiment-Research/
 ├── data/
-│   ├── raw/               # Raw datasets (Git-ignored)
-│   └── processed/         # Cleaned/Splitted datasets for training (Git-ignored)
-├── src/
-│   └── sentiment_classification/
-│       ├── data/          # Dataset loading and Tokenization
-│       ├── models/        # Custom HuggingFace Trainer & Callbacks
-│       ├── scripts/       # Main execution scripts (train.py)
-│       └── utils/         # Configs, metrics, hardware logging helpers
-├── outputs/               # Trained models, checkpoints, and reports logs (Git-ignored)
-├── setup.py               # Defines the project as a Python package
-├── run_training.sh        # Quick-start bash script
-└── requirements.txt       # Core dependencies (laonlp, transformers, etc.)
+│   └── processed/
+│       ├── train.csv
+│       └── val.csv
+├── experiments/
+│   ├── run_experiment.sh
+│   ├── xlm-roberta-finetuning.sh
+│   ├── xlm-roberta-lora.sh
+│   ├── xlm-roberta-cross-validation.sh
+│   └── ... (same for mbert, mbert-lao)
+├── src/sentiment_classification/
+│   ├── data/dataset.py
+│   ├── models/factory.py
+│   ├── models/trainer.py
+│   ├── scripts/train.py
+│   └── utils/config.py
+├── requirements.txt
+├── run_training.sh
+└── setup.py
 ```
 
----
+## Data format
 
-## 🚀 Quick Start (Local & Google Colab)
+`data/processed/train.csv` and `data/processed/val.csv` must contain:
 
-### Step 1: Clone the repository
-```bash
-git clone https://github.com/YOUR_USERNAME/Lao-Sentiment-Research.git
-cd Lao-Sentiment-Research
-```
+| column | type |
+| --- | --- |
+| `text` | string |
+| `label` | integer (`0` negative, `1` positive) |
 
-### Step 2: Install dependencies
+## Installation
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 3: Prepare your Data
-This repository **does not** contain the proprietary Lao E-commerce dataset. 
-You must provide your own dataset and place it inside the `data/processed/` directory.
+Optional editable install:
 
-The pipeline strictly expects **two mandatory files** encoded in `UTF-8`:
-1. `data/processed/train.csv` (For training)
-2. `data/processed/val.csv` (For Evaluation/Reporting)
-
-**Required CSV Scheme:**
-| label | text |
-| :---: | :--- |
-| 1 | ລາຄາຖືກຫຼາຍ ຄຸ້ມຄ່າ ສົ່ງໄວ |
-| 0 | ບໍ່ຕົງປົກ ເສຍຄວາມຮູ້ສຶກ |
-*(Note: `label` must be `0` for Negative and `1` for Positive).*
-
-### Step 4: Run the Training Pipeline!
-Make the bash script executable and hit run. Be prepared to see a beautiful, automatically formatted terminal table tracking your 25 epochs!
 ```bash
-chmod +x run_training.sh
+pip install -e .
+```
+
+## Run training
+
+Default quick run:
+
+```bash
 ./run_training.sh
 ```
 
----
+Direct run:
 
-## 🌳 Git Workflow
-This project utilizes an **Experiment-Driven Git Flow**:
-- The **`main`** branch only contains clean, production-ready configurations and core python logic. 
-- Generated artifacts (`outputs/`), local dependencies (`venv/`), and databases (`data/`) are strictly `.gitignore`d.
+```bash
+python src/sentiment_classification/scripts/train.py \
+  --model_key xlm-roberta \
+  --training_mode full-finetuning \
+  --output_dir outputs/experiment/xlm-roberta-finetuning
+```
+
+Run LoRA:
+
+```bash
+python src/sentiment_classification/scripts/train.py \
+  --model_key xlm-roberta \
+  --training_mode lora \
+  --output_dir outputs/experiment/xlm-roberta-lora
+```
+
+Run K-Fold=3:
+
+```bash
+python src/sentiment_classification/scripts/train.py \
+  --model_key xlm-roberta \
+  --training_mode cross-validation \
+  --num_folds 3 \
+  --output_dir outputs/experiment/xlm-roberta-cross-validation
+```
+
+If you want cross-validation to use `train + val` together, add:
+
+```bash
+--cv_include_val
+```
+
+## Outputs
+
+Single split (`full-finetuning`, `lora`) output folder contains:
+
+- `best_model/`
+- `best_model_info.json`
+- `validation_data.csv`
+- `predictions.csv`
+- `timing_metrics.json`
+- `hardware_metrics.json`
+- `experiment_config.json`
+- `trainable_params.json`
+
+Cross-validation output folder contains:
+
+- `fold_1/`, `fold_2/`, `fold_3/` each with:
+  - `best_model/`
+  - `best_model_info.json`
+  - `validation_data.csv`
+  - `predictions.csv`
+  - `timing_metrics.json`
+- `cross_validation_predictions.csv`
+- `timing_metrics.json` (aggregated)
+- `hardware_metrics.json`
+- `experiment_config.json`
+
+## Suggested branch strategy
+
+Create one branch per experiment family, for example:
+
+- `experiment/xlm-roberta-finetuning`
+- `experiment/xlm-roberta-lora`
+- `experiment/xlm-roberta-cross-validation`
+
+The same naming pattern can be used for `mbert` and `mbert-lao`.

@@ -15,8 +15,10 @@ setup(
         "scikit-learn",
         "pandas",
         "numpy",
+        "sympy==1.12",
         "peft",
-        "accelerate"
+        "accelerate",
+        "psutil"
     ],
     python_requires=">=3.8",
 )
