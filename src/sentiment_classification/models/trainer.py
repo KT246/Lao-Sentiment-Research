@@ -2,6 +2,7 @@ import os
 import json
 import time
 import datetime
+import inspect
 import torch
 from torch import nn
 from transformers import (
@@ -141,16 +142,23 @@ def setup_trainer(
         push_to_hub=False,
     )
 
-    trainer = WeightedTrainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset,
-        eval_dataset=eval_dataset,
-        tokenizer=tokenizer,
-        data_collator=DataCollatorWithPadding(tokenizer=tokenizer),
-        callbacks=[timing_callback, EpochLoggingCallback(output_dir=output_dir)],
-        class_weights=class_weights
-    )
+    trainer_kwargs = {
+        "model": model,
+        "args": training_args,
+        "train_dataset": train_dataset,
+        "eval_dataset": eval_dataset,
+        "data_collator": DataCollatorWithPadding(tokenizer=tokenizer),
+        "callbacks": [timing_callback, EpochLoggingCallback(output_dir=output_dir)],
+        "class_weights": class_weights,
+    }
+
+    trainer_init_params = inspect.signature(Trainer.__init__).parameters
+    if "processing_class" in trainer_init_params:
+        trainer_kwargs["processing_class"] = tokenizer
+    elif "tokenizer" in trainer_init_params:
+        trainer_kwargs["tokenizer"] = tokenizer
+
+    trainer = WeightedTrainer(**trainer_kwargs)
 
     try:
         trainer.remove_callback(PrinterCallback)
