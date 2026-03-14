@@ -1,5 +1,4 @@
 from transformers import AutoModelForSequenceClassification
-from peft import LoraConfig, TaskType, get_peft_model
 
 from sentiment_classification.utils.config import DEFAULT_LORA_CONFIG
 
@@ -22,6 +21,14 @@ def build_sequence_classification_model(
     merged_lora_config = dict(DEFAULT_LORA_CONFIG)
     if lora_config:
         merged_lora_config.update(lora_config)
+
+    try:
+        from peft import LoraConfig, TaskType, get_peft_model
+    except Exception as exc:
+        raise RuntimeError(
+            "LoRA mode requires a healthy PEFT/Transformers environment. "
+            "Please reinstall compatible torch/torchvision/transformers/peft in Colab."
+        ) from exc
 
     peft_config = LoraConfig(
         task_type=TaskType.SEQ_CLS,
