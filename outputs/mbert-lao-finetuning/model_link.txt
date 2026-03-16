@@ -1,2 +1,2 @@
-Model: Multilingual BERT (Lao) - Full Fine-tuning
+Model: mBERT-Lao (Full Fine-tuning)
 Link: https://drive.google.com/drive/folders/1VZqKRHPcBzjsASLTk4uMhMoccx90cr14?usp=sharing
