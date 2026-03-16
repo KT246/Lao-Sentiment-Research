@@ -1,0 +1,3 @@
+﻿Model: mbert-lao-lora
+Link: https://drive.google.com/drive/folders/1qpM99zH8uj4sVFydRsCxqoVDTMMS6chT?usp=sharing
+
