@@ -1,2 +1,2 @@
-Model: Multilingual BERT + LoRA
+Model: mBERT + LoRA
 Link: https://drive.google.com/drive/folders/1c3yeq8J7zqVKq2dk7Yl66yecwzAboFZB?usp=sharing
