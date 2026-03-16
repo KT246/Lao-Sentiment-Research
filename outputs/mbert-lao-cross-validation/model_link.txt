@@ -1,2 +1,2 @@
-Model: Multilingual BERT (Lao) - Cross-Validation
+Model: mBERT-Lao (Cross-Validation)
 Link: https://drive.google.com/drive/folders/1SSVH42_m9aENmsrK9cj6hxqEdYe5JP_E?usp=sharing
