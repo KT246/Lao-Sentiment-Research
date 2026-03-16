@@ -1,2 +1,2 @@
-Model: Multilingual BERT (Cross-Validation)
+Model: mBERT (Cross-Validation)
 Link: https://drive.google.com/drive/folders/1bOyrU9ND_CKTJD6OnwRtw6SoxUsb3rF8?usp=sharing
