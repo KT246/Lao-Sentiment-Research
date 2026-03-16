@@ -1,2 +1,2 @@
-Model: Multilingual BERT (Lao) + LoRA
+Model: mBERT-Lao + LoRA
 Link: https://drive.google.com/drive/folders/1qpM99zH8uj4sVFydRsCxqoVDTMMS6chT?usp=sharing
