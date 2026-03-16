@@ -1,2 +1,2 @@
-Model: Multilingual BERT (Full Fine-tuning)
+Model: mBERT (Full Fine-tuning)
 Link: https://drive.google.com/drive/folders/17WmRK5ijuT3PqCI7BXUvPP19p7IbrsYf?usp=sharing
