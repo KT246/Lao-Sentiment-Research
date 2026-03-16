@@ -8,6 +8,7 @@ from pathlib import Path
 
 import joblib
 import numpy as np
+from sklearn.utils.class_weight import compute_class_weight
 
 CURRENT_SRC_DIR = Path(__file__).resolve().parents[2]
 if str(CURRENT_SRC_DIR) not in sys.path:
@@ -169,6 +170,8 @@ def main():
     x_train = vectorizer.fit_transform(train_texts)
     x_val = vectorizer.transform(val_texts)
     classes = np.array(sorted(np.unique(train_labels)))
+    class_weight_values = compute_class_weight(class_weight="balanced", classes=classes, y=train_labels)
+    class_weight_map = {int(cls): float(weight) for cls, weight in zip(classes, class_weight_values)}
 
     best_classifier = None
     best_epoch = None
@@ -182,6 +185,7 @@ def main():
             epoch_classifier = build_baseline_estimator(
                 model_key=args.model_key,
                 seed=args.seed + epoch - 1,
+                class_weight=class_weight_map,
                 logreg_c=args.logreg_c,
                 svm_c=args.svm_c,
                 decision_tree_max_depth=args.decision_tree_max_depth,
@@ -207,6 +211,7 @@ def main():
         classifier = build_baseline_estimator(
             model_key=args.model_key,
             seed=args.seed,
+            class_weight=class_weight_map,
             logreg_c=args.logreg_c,
             svm_c=args.svm_c,
             decision_tree_max_depth=args.decision_tree_max_depth,

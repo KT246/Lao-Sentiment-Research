@@ -32,6 +32,7 @@ def _sgd_alpha_from_c(c_value: float):
 def build_baseline_estimator(
     model_key: str,
     seed: int = 42,
+    class_weight=None,
     logreg_c: float = 1.0,
     svm_c: float = 1.0,
     decision_tree_max_depth: int = 40,
@@ -42,14 +43,14 @@ def build_baseline_estimator(
             loss="log_loss",
             penalty="l2",
             alpha=_sgd_alpha_from_c(logreg_c),
-            class_weight="balanced",
+            class_weight=class_weight,
             shuffle=False,
             random_state=seed,
         )
 
     if model_key == "decision-tree":
         return DecisionTreeClassifier(
-            class_weight="balanced",
+            class_weight=class_weight,
             max_depth=decision_tree_max_depth,
             min_samples_leaf=decision_tree_min_samples_leaf,
             max_features="sqrt",
@@ -61,7 +62,7 @@ def build_baseline_estimator(
             loss="hinge",
             penalty="l2",
             alpha=_sgd_alpha_from_c(svm_c),
-            class_weight="balanced",
+            class_weight=class_weight,
             shuffle=False,
             random_state=seed,
         )
