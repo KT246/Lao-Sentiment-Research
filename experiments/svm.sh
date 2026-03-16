@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-./experiments/run_baseline.sh "svm" "baseline" "outputs/experiment/svm" \
+bash ./experiments/run_baseline.sh "svm" "baseline" "outputs/experiment/svm" \
   --epochs 25 \
   --batch_size 16 \
   --eval_batch_size 32 \

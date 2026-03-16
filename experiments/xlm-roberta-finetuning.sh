@@ -1,3 +1,3 @@
 #!/bin/bash
 set -e
-./experiments/run_experiment.sh "xlm-roberta" "full-finetuning" "outputs/experiment/xlm-roberta-finetuning"
+bash ./experiments/run_experiment.sh "xlm-roberta" "full-finetuning" "outputs/experiment/xlm-roberta-finetuning"
