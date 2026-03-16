@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
-python src/sentiment_classification/scripts/train_baseline.py \
-  --model_key "svm" \
-  --output_dir "outputs/experiment/svm"
+./experiments/run_baseline.sh "svm" "baseline" "outputs/experiment/svm" \
+  --epochs 25 \
+  --batch_size 16 \
+  --eval_batch_size 32 \
+  --save_strategy "epoch"

@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
-python src/sentiment_classification/scripts/train_baseline.py \
-  --model_key "decision-tree" \
-  --output_dir "outputs/experiment/decision-tree"
+./experiments/run_baseline.sh "decision-tree" "baseline" "outputs/experiment/decision-tree" \
+  --epochs 25 \
+  --batch_size 16 \
+  --eval_batch_size 32 \
+  --save_strategy "epoch"
