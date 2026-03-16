@@ -13,6 +13,7 @@ setup(
         "datasets",
         "evaluate",
         "scikit-learn",
+        "joblib",
         "pandas",
         "numpy",
         "sympy==1.12",

@@ -25,13 +25,19 @@ runs/
 *.pkl
 *.pickle
 
-# 3. Experiment tracking
+# 3. Non-code research/report artifacts
+latex/
+paper/
+notebooks/
+tmp_pdf_ref/
+
+# 4. Experiment tracking
 wandb/
 mlruns/
 lightning_logs/
 tensorboard/
 
-# 4. Python cache and build artifacts
+# 5. Python cache and build artifacts
 __pycache__/
 *.py[cod]
 *$py.class
@@ -40,7 +46,7 @@ __pycache__/
 .ruff_cache/
 .cache/
 
-# 5. Environments and local config
+# 6. Environments and local config
 .env
 .venv
 env/
@@ -48,15 +54,16 @@ venv/
 ENV/
 .python-version
 
-# 6. OS and IDE files
+# 7. OS and IDE files
 .idea/
 .vscode/
 .ipynb_checkpoints/
+*.ipynb
 *.swp
 .DS_Store
 Thumbs.db
 
-# 7. Python packaging
+# 8. Python packaging
 build/
 dist/
 *.egg-info/
