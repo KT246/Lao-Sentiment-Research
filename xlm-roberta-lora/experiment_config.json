@@ -1,0 +1,23 @@
+{
+    "model_key": "xlm-roberta",
+    "model_name": "xlm-roberta-base",
+    "training_mode": "lora",
+    "use_lora": true,
+    "use_cross_validation": false,
+    "epochs": 25,
+    "batch_size": 16,
+    "eval_batch_size": 32,
+    "max_length": 128,
+    "padding": "max_length",
+    "learning_rate": 1e-05,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "num_folds": 1,
+    "cv_include_val": false,
+    "seed": 42,
+    "lora": {
+        "r": 16,
+        "alpha": 32,
+        "dropout": 0.1
+    }
+}

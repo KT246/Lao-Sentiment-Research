@@ -1,0 +1,13 @@
+﻿error_type,text,n_experiments,occurrences,model_list,true_label,predicted_label
+false_negative,ບັງຄັບໃຫ້ໃຊ້ ແຕ່ເຮັດຈັງໃດສີລົງທະບຽນ? ຕອນນີ້ລົງທະບຽນໄດ້ແລ້ວ ຂອບໃຈ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",1,0
+false_negative,ມັນເປັນຫຍັງຄືມາປ່ຽນຫນ້າເຟດກັນ ຜີ່ບ້າບໍ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",1,0
+false_negative,ສໍາລັບໃຜເຂົ້າຫນ້າແອັບບໍ່ໄດ້ແມ່ນລົບແອັບແລ້ວດາວໂຫລດໃຫມ່ ເຂົ້າສູ່ລະບົບໃຫມ່,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",1,0
+false_negative,ໃຫ້ປັບແນມຸນໄດ້ເນັດແຕ່ແບງບໍໄດ້ ຄັນແບງໄດ້ຄືສີດີ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",1,0
+false_positive,ດາວໂຫຍ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ບໍ ok,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ປ່ຽນໂທລະສັບໃຫມ່,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ລອງຈອງເບີ່ງກ່ອນເດີຮາ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ຫົງ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ອານຸມັດໃຫ້ແດ່ເບີກະໃສ່ແລ້ວ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ເບີລະຫັດwhatsapp,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ເປໄຖັ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1

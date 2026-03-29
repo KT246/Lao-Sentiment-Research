@@ -1,0 +1,81 @@
+Fine-tuning Pre-trained Language Models for Lao Sentiment 
+Analysis in E-commerce
+Student's Full Name1
+and Quang-Hung Le*1
+Department of Information Technology,
+Quy Nhon University, Vietnam
+Student Email, lequanghung@qnu.edu.vn
+Abstract. A concise (150–250 words) summary.
+1. INTRODUCTION
+ Importance of sentiment analysis in e-commerce platforms
+ Challenges of processing Lao user-generated content
+ Limitations of traditional and generic sentiment models
+ Advantages of fine-tuning pre-trained language models
+ Research objectives and contributions
+2. RELATED WORK
+2.1 Sentiment Analysis in E-commerce
+ Review-based and aspect-level sentiment analysis
+ Domain-specific sentiment challenges
+2.2 Low-Resource Language Processing
+ Transfer learning for under-resourced languages
+ Multilingual and cross-lingual models
+2.3 Pre-trained Language Models
+ Monolingual vs. multilingual PLMs
+ Fine-tuning strategies for text classification
+3. DATASET CONSTRUCTION AND ANALYSIS
+3.1 Data Collection
+ Sources of Lao e-commerce reviews
+3.2 Annotation Scheme
+ Sentiment labels and guidelines 
+3.3 Data Preprocessing and Cleaning Pipeline
+
+To improve the quality of the Lao language dataset, several preprocessing and data filtering techniques were applied before training the final model.
+
+First, the raw data was manually labeled to assign the correct sentiment class for each sentence. After labeling, the dataset underwent a data cleaning and preprocessing stage, where noise such as meaningless tokens, repeated characters, emojis, and invalid symbols were removed. Special attention was given to linguistic patterns in the Lao language, such as cases where vowels appear without consonants or where characters are combined in a way that does not produce meaningful words.
+
+Next, a lightweight model was trained to quickly evaluate the dataset and identify potentially incorrect or low-quality samples. The model predictions were compared with the original labels to detect inconsistencies. Sentences that were correctly predicted and consistent with the labels were retained, while suspicious or incorrect samples were removed.
+
+In addition, for extremely problematic samples, Cross-Validation using the K-Fold technique (K = 5) was applied. This approach helped identify unstable samples that were repeatedly misclassified across multiple folds. Such samples often contained invalid character patterns, including vowels without consonants or combinations that produced meaningless text. These samples were considered unreliable and removed from the dataset.
+
+After filtering and validation, the remaining high-quality data was consolidated to create a Golden Dataset, which represents the most reliable subset of the data.
+
+Finally, the golden dataset was split into training and validation sets to prepare for the final model training and evaluation.
+3.4 Dataset Statistics
+ Data distribution and class balance
+ 
+*
+Corresponding author: Quang-Hung Le (lequanghung@qnu.edu.vn)
+4. PROBLEM DEFINITION
+ Task formulation and assumptions
+ Evaluation protocol
+5. METHODOLOGY
+5.1 Pre-trained Language Models
+ Selected multilingual and Lao-supporting PLMs
+5.2 Fine-Tuning Strategies
+ Full fine-tuning
+ Parameter-efficient tuning
+5.3 Training Objective
+ Loss functions and optimization
+6. EXPERIMENTS
+5.1 Experimental Setup
+- Baseline Models
+ Classical ML baselines
+ Neural baselines
+- Evaluation Metrics
+ Accuracy, Precision, Recall, F1-score
+- Implementation Details
+ Hyperparameters and training environment
+5.2 Results and Discussion
+- Overall Performance
+ Comparison of PLMs and baselines
+- Domain Adaptation Analysis
+ Impact of e-commerce data
+- Error Analysis
+ Common errors and linguistic patterns
+- Practical Implications
+ Deployment in real-world e-commerce systems
+ Scalability and inference efficiency
+6. CONCLUSION
+ Summary of findings and contributions
+ Dataset coverage and bias
+ Extension to aspect-level sentiment

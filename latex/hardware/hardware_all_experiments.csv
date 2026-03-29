@@ -1,0 +1,13 @@
+﻿experiment_name,model_key,model_name_display,training_mode,training_mode_display,cpu_physical_cores,cpu_total_cores,cpu_max_frequency_mhz,cpu_current_frequency_mhz,cpu_usage_percent,ram_total_gb,ram_available_gb,ram_used_gb,ram_usage_percent,gpu_count,gpu_names,gpu_total_memory_gb
+decision-tree,decision-tree,Decision Tree,baseline,Baseline,1,2,0.0,2000.144,2.0,12.67,11.05,1.31,12.8,1,Tesla T4,14.56
+logistic-regression,logistic-regression,Logistic Regression,baseline,Baseline,1,2,0.0,2000.144,4.0,12.67,11.04,1.31,12.8,1,Tesla T4,14.56
+mbert-cross-validation,mbert,mBERT,cross-validation,3-Fold Cross-Validation,1,2,0.0,2000.244,2.0,12.67,10.74,1.62,15.2,1,Tesla T4,14.56
+mbert-finetuning,mbert,mBERT,full-finetuning,Full Fine-tuning,1,2,0.0,2000.146,5.5,12.67,10.81,1.55,14.7,1,Tesla T4,14.56
+mbert-lao-cross-validation,mbert-lao,mBERT-Lao,cross-validation,3-Fold Cross-Validation,1,2,0.0,2000.15,2.0,12.67,10.83,1.53,14.5,1,Tesla T4,14.56
+mbert-lao-finetuning,mbert-lao,mBERT-Lao,full-finetuning,Full Fine-tuning,1,2,0.0,2000.198,38.3,12.67,10.77,1.59,15.0,1,Tesla T4,14.56
+mbert-lao-lora,mbert-lao,mBERT-Lao,lora,LoRA,1,2,0.0,2000.158,54.8,12.67,10.83,1.53,14.5,1,Tesla T4,14.56
+mbert-lora,mbert,mBERT,lora,LoRA,1,2,0.0,2000.14,2.5,12.67,10.8,1.56,14.8,1,Tesla T4,14.56
+svm,svm,SVM,baseline,Baseline,1,2,0.0,2000.144,2.0,12.67,11.06,1.3,12.7,1,Tesla T4,14.56
+xlm-roberta-cross-validation,xlm-roberta,XLM-RoBERTa,cross-validation,3-Fold Cross-Validation,1,2,0.0,2000.146,1.5,12.67,10.81,1.54,14.7,1,Tesla T4,14.56
+xlm-roberta-finetuning,xlm-roberta,XLM-RoBERTa,full-finetuning,Full Fine-tuning,1,2,0.0,2000.156,7.5,12.67,10.95,1.41,13.6,1,Tesla T4,14.56
+xlm-roberta-lora,xlm-roberta,XLM-RoBERTa,lora,LoRA,1,2,0.0,2000.156,5.0,12.67,10.81,1.55,14.7,1,Tesla T4,14.56

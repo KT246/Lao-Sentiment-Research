@@ -1,0 +1,4 @@
+experiment_name,model_key,training_mode,f1_macro,precision_macro,recall_macro
+xlm-roberta-finetuning,xlm-roberta,full-finetuning,0.961664,0.954414,0.970177
+xlm-roberta-lora,xlm-roberta,lora,0.958925,0.953939,0.964457
+xlm-roberta-cross-validation,xlm-roberta,cross-validation,0.959664,0.954135,0.965879

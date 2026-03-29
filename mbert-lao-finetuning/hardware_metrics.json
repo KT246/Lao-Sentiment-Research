@@ -1,0 +1,22 @@
+{
+    "cpu": {
+        "physical_cores": 1,
+        "total_cores": 2,
+        "max_frequency_mhz": 0.0,
+        "current_frequency_mhz": 2000.198,
+        "cpu_usage_percent": 38.3
+    },
+    "ram": {
+        "total_gb": 12.67,
+        "available_gb": 10.77,
+        "used_gb": 1.59,
+        "usage_percent": 15.0
+    },
+    "gpu": [
+        {
+            "id": 0,
+            "name": "Tesla T4",
+            "total_memory_gb": 14.56
+        }
+    ]
+}

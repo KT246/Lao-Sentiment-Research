@@ -1,0 +1,18 @@
+{
+    "model_key": "mbert",
+    "model_name": "bert-base-multilingual-cased",
+    "training_mode": "cross-validation",
+    "use_lora": false,
+    "use_cross_validation": true,
+    "epochs": 25,
+    "batch_size": 16,
+    "eval_batch_size": 32,
+    "max_length": 128,
+    "padding": "max_length",
+    "learning_rate": 1e-05,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "num_folds": 3,
+    "cv_include_val": false,
+    "seed": 42
+}

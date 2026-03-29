@@ -1,0 +1,13 @@
+experiment_name,model_key,training_mode,f1_macro,precision_macro,recall_macro
+xlm-roberta-finetuning,xlm-roberta,full-finetuning,0.961664,0.954414,0.970177
+xlm-roberta-lora,xlm-roberta,lora,0.958925,0.953939,0.964457
+xlm-roberta-cross-validation,xlm-roberta,cross-validation,0.959664,0.954135,0.965879
+mbert-finetuning,mbert,full-finetuning,0.605709,0.633577,0.601184
+mbert-lora,mbert,lora,0.604839,0.625337,0.600382
+mbert-cross-validation,mbert,cross-validation,0.613652,0.635002,0.608419
+mbert-lao-finetuning,mbert-lao,full-finetuning,0.932815,0.924114,0.943745
+mbert-lao-lora,mbert-lao,lora,0.923464,0.915369,0.933505
+mbert-lao-cross-validation,mbert-lao,cross-validation,0.928494,0.922824,0.934983
+logistic-regression,logistic-regression,baseline,0.937038,0.932175,0.942463
+svm,svm,baseline,0.943571,0.936293,0.952222
+decision-tree,decision-tree,baseline,0.872124,0.866196,0.879233

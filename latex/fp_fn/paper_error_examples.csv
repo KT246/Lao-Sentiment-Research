@@ -1,0 +1,11 @@
+﻿error_type,example_text,true_label,predicted_label,n_fixed_split_experiments,fixed_split_experiments
+false_positive,ບໍ ok,0,1,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora"
+false_positive,ປ່ຽນໂທລະສັບໃຫມ່,0,1,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora"
+false_positive,ເບີລະຫັດwhatsapp,0,1,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora"
+false_positive,bugຫລາຍ,0,1,7,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm"
+false_positive,ແອັບຊ່າສຸດ,0,1,7,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm"
+false_negative,ເປັນຍັງຄື ທັງຫມົດທີ່ຈຫຼີ້ນບໍ່ໄດ້,1,0,8,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora"
+false_negative,ຄັກຢູ່ ແຕ່ໃຫ້ອັບເດດດຸໂພດ,1,0,7,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-lora"
+false_negative,ແຕ່ໃຫ້ປັບປຸງໃຫ້ໄວກ່ວາເກົ່າ,1,0,7,"decision-tree, logistic-regression, mbert-lao-finetuning, mbert-lao-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora"
+false_negative,ໂຄ້ດດີ ຖ້າບໍ່ອັບເດດແອປ ແຮງຊິດີ,1,0,7,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm"
+false_negative,ຂອບເຂດສົ່ງ ກ້ວາງໄກລ ສົ່ງໄວ ບໍ່ມີບັນຫາ,1,0,7,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm"

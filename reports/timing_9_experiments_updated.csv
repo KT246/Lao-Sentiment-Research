@@ -1,0 +1,10 @@
+experiment_name,model_key,model_name,training_mode,training_mode_display,avg_epoch_time_seconds,total_training_time_seconds,total_training_time_minutes,epochs_completed,num_folds,folds_present
+xlm-roberta-finetuning,xlm-roberta,XLM-RoBERTa,full-finetuning,Full Fine-tuning,267.31,6682.66,111.38,25.0,1,0
+xlm-roberta-lora,xlm-roberta,XLM-RoBERTa,lora,LoRA,117.8,2945.07,49.08,25.0,1,0
+xlm-roberta-cross-validation,xlm-roberta,XLM-RoBERTa,cross-validation,Cross-Validation,176.25,13219.0,220.32,,3,3
+mbert-finetuning,mbert,mBERT,full-finetuning,Full Fine-tuning,205.82,5145.48,85.76,25.0,1,0
+mbert-lora,mbert,mBERT,lora,LoRA,116.92,2922.95,48.72,25.0,1,0
+mbert-cross-validation,mbert,mBERT,cross-validation,Cross-Validation,136.72,10254.19,170.9,,3,3
+mbert-lao-finetuning,mbert-lao,mBERT-Lao,full-finetuning,Full Fine-tuning,177.52,4438.1,73.97,25.0,1,0
+mbert-lao-lora,mbert-lao,mBERT-Lao,lora,LoRA,113.74,2843.53,47.39,25.0,1,0
+mbert-lao-cross-validation,mbert-lao,mBERT-Lao,cross-validation,Cross-Validation,122.08,9156.29,152.6,,3,3

@@ -1,0 +1,39 @@
+{
+    "model_key": "svm",
+    "model_name": "SVM",
+    "model_backend": "sklearn",
+    "training_mode": "baseline",
+    "use_lora": false,
+    "use_cross_validation": false,
+    "seed": 42,
+    "epochs": 25,
+    "batch_size": 16,
+    "eval_batch_size": 32,
+    "num_labels": 2,
+    "max_length": 128,
+    "padding": "max_length",
+    "learning_rate": 1e-05,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "num_folds": 1,
+    "cv_include_val": false,
+    "save_strategy": "epoch",
+    "feature_extractor": {
+        "type": "tfidf",
+        "analyzer": "char",
+        "ngram_range": [
+            3,
+            5
+        ],
+        "min_df": 2,
+        "max_features": 50000,
+        "sublinear_tf": true,
+        "lowercase": false
+    },
+    "classifier_hyperparameters": {
+        "logreg_c": 1.0,
+        "svm_c": 1.0,
+        "decision_tree_max_depth": 40,
+        "decision_tree_min_samples_leaf": 2
+    }
+}

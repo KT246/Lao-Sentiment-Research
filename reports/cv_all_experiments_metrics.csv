@@ -1,0 +1,13 @@
+experiment_name,experiment_display,model_key,model_name,training_mode,training_mode_display,num_samples,accuracy,f1_macro,precision_macro,recall_macro
+xlm-roberta-finetuning,XLM-RoBERTa (Full Fine-tuning),xlm-roberta,XLM-RoBERTa,full-finetuning,Full Fine-tuning,5028,0.966388,0.961664,0.954414,0.970177
+xlm-roberta-lora,XLM-RoBERTa (LoRA),xlm-roberta,XLM-RoBERTa,lora,LoRA,5028,0.9642,0.958925,0.953939,0.964457
+xlm-roberta-cross-validation,XLM-RoBERTa (Cross-Validation),xlm-roberta,XLM-RoBERTa,cross-validation,Cross-Validation,20111,0.964795,0.959664,0.954135,0.965879
+mbert-finetuning,mBERT (Full Fine-tuning),mbert,mBERT,full-finetuning,Full Fine-tuning,5028,0.696897,0.605709,0.633577,0.601184
+mbert-lora,mBERT (LoRA),mbert,mBERT,lora,LoRA,5028,0.690135,0.604839,0.625337,0.600382
+mbert-cross-validation,mBERT (Cross-Validation),mbert,mBERT,cross-validation,Cross-Validation,20111,0.696733,0.613652,0.635002,0.608419
+mbert-lao-finetuning,mBERT-Lao (Full Fine-tuning),mbert-lao,mBERT-Lao,full-finetuning,Full Fine-tuning,5028,0.940732,0.932815,0.924114,0.943745
+mbert-lao-lora,mBERT-Lao (LoRA),mbert-lao,mBERT-Lao,lora,LoRA,5028,0.932578,0.923464,0.915369,0.933505
+mbert-lao-cross-validation,mBERT-Lao (Cross-Validation),mbert-lao,mBERT-Lao,cross-validation,Cross-Validation,20111,0.937497,0.928494,0.922824,0.934983
+logistic-regression,Logistic Regression (Baseline),logistic-regression,Logistic Regression,baseline,Baseline,5028,0.945107,0.937038,0.932175,0.942463
+svm,SVM (Baseline),svm,SVM,baseline,Baseline,5028,0.950477,0.943571,0.936293,0.952222
+decision-tree,Decision Tree (Baseline),decision-tree,Decision Tree,baseline,Baseline,5028,0.887828,0.872124,0.866196,0.879233

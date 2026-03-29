@@ -1,0 +1,7 @@
+﻿model_key,model_name_display,cpu_physical_cores,cpu_total_cores,cpu_current_frequency_mhz,ram_total_gb,gpu_count,gpu_names,gpu_total_memory_gb
+decision-tree,Decision Tree,1,2,2000.144,12.67,1,Tesla T4,14.56
+logistic-regression,Logistic Regression,1,2,2000.144,12.67,1,Tesla T4,14.56
+mbert,mBERT,1,2,2000.244,12.67,1,Tesla T4,14.56
+mbert-lao,mBERT-Lao,1,2,2000.15,12.67,1,Tesla T4,14.56
+svm,SVM,1,2,2000.144,12.67,1,Tesla T4,14.56
+xlm-roberta,XLM-RoBERTa,1,2,2000.146,12.67,1,Tesla T4,14.56

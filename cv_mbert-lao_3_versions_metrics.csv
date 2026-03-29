@@ -1,0 +1,4 @@
+experiment_name,model_key,training_mode,f1_macro,precision_macro,recall_macro
+mbert-lao-finetuning,mbert-lao,full-finetuning,0.932815,0.924114,0.943745
+mbert-lao-lora,mbert-lao,lora,0.923464,0.915369,0.933505
+mbert-lao-cross-validation,mbert-lao,cross-validation,0.928494,0.922824,0.934983
