@@ -1,4 +1,4 @@
-﻿\RequirePackage{silence}
+\RequirePackage{silence}
 \WarningFilter{latexfont}{Font shape}
 \WarningFilter{latexfont}{Some font shapes were not available}
 \documentclass[conference, onecolumn]{IEEEtran}
@@ -9,6 +9,8 @@
 \usepackage{microtype}
 \ifPDFTeX
 \usepackage[utf8]{inputenc}
+\newcommand{\laofont}{}
+\newcommand{\tablelaofont}{}
 \else
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
@@ -79,7 +81,7 @@ lequanghung@qnu.edu.vn
 \maketitle
 
 \begin{abstract}
-Building reliable Lao sentiment classifiers remains difficult because annotated data is limited and real user feedback is often short, noisy, and mixed with English interface terms. This paper introduces a filtered benchmark of 25,139 Lao-language reviews collected from widely used digital applications in Laos, with 20,111 samples used for training and 5,028 for validation. We compare XLM-RoBERTa, mBERT, and mBERT-Lao under Full Fine-tuning, LoRA, and 3-Fold Cross-Validation, together with Logistic Regression, SVM, and Decision Tree baselines. XLM-RoBERTa achieves the strongest fixed-split result with 96.64\% accuracy and 0.9617 F1-macro, while SVM remains the strongest classical baseline with 0.9436 F1-macro. Overall, the benchmark shows that multilingual PLMs transfer well to Lao sentiment classification, Lao-supporting pretraining remains beneficial, and LoRA provides a practical performance-cost trade-off. Our contributions, including the code-mixing setting, Lao dataset, and trained models, are publicly available at \url{https://github.com/KT246/LaosSA}.
+Effective sentiment analysis for the Lao language is hindered by a scarcity of annotated resources and the inherent noise of real-world user feedback, which often features code-mixing and informal script patterns. This study addresses these challenges by introducing a high-quality, filtered benchmark of 25,139 Lao-language reviews collected from popular digital applications. We evaluate several state-of-the-art Pre-trained Language Models (PLMs), including XLM-RoBERTa, mBERT, and a Lao-specific mBERT-Lao, across various adaptation strategies such as Full Fine-tuning and Low-Rank Adaptation (LoRA). Our experimental results demonstrate that XLM-RoBERTa achieves superior performance with 96.64\% accuracy and an F1-macro score of 0.9617. We also find that while Lao-oriented pretraining provides significant benefits, LoRA offers a highly efficient performance-cost trade-off, maintaining competitive accuracy with minimal trainable parameters. Our research highlights the robustness of multilingual transfer for low-resource sentiment classification and provides a publicly available dataset and code-mixing benchmark at \url{https://github.com/KT246/LaosSA}.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -567,9 +569,9 @@ mBERT-Lao & LoRA & 1,476,866 & 0.0117 & 113.74 & 2843.53 & 0.9235 \\
 \section{Conclusion}
 \label{sec:conclusion}
 
-This study establishes a benchmark for Lao sentiment classification using real review data from digital applications in Laos and evaluates sparse baselines alongside multilingual and Lao-supporting PLMs under a single experimental protocol. Three conclusions stand out. First, XLM-RoBERTa is the strongest overall model in the current benchmark. Second, mBERT-Lao remains competitive, which suggests that Lao-aware pretraining still matters when language coverage and tokenization fit are limited. Third, LoRA preserves most of the gains of Full Fine-tuning while reducing adaptation cost, making it a practical option when computation is constrained. The continued competitiveness of SVM also shows that short Lao reviews still contain useful lexical sentiment cues.
+In this study, we established a comprehensive benchmark for Lao sentiment classification, utilizing a large-scale, filtered dataset of real-world mobile application reviews. Our systematic evaluation of classical baselines and advanced Pre-trained Language Models reveals that XLM-RoBERTa delivers the most robust performance, while Lao-specific pretraining significantly enhances cross-lingual transfer in under-resourced settings. Furthermore, we demonstrated that Parameter-Efficient Fine-Tuning (PEFT) via LoRA achieves a practical balance between predictive quality and computational efficiency, making it a viable strategy for resource-constrained deployments. The persistent competitiveness of traditional SVM baselines further underscores the importance of localized lexical features in short, informal Lao feedback.
 
-At the same time, the benchmark highlights the current difficulty of the task. The main errors are concentrated in short, ambiguous, and code-mixed reviews, and the dataset still inherits the limitations of Google Play feedback, including moderate class imbalance and uneven domain coverage. The next step is therefore not only to enlarge the dataset, but also to improve label quality and domain balance, and then extend the benchmark toward finer-grained settings such as aspect-level sentiment analysis, where model outputs can support service monitoring more directly.
+Despite these advancements, the study identifies critical challenges posed by linguistic ambiguity, noise, and semantic shifts in code-mixed environments. Future research should prioritize enhancing dataset diversity and label consistency, while exploring more granular analysis frameworks, such as aspect-level sentiment classification, to provide deeper insights into user experience. By releasing our dataset and trained models, we aim to support the development of more scalable and accurate NLP tools for the Lao digital ecosystem.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
