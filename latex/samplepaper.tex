@@ -124,7 +124,7 @@ Recent low-resource sentiment studies still report clear gains from transformer-
 \section{Dataset Construction and Analysis}
 \label{sec:dataset}
 
-This section describes how the Lao review benchmark was collected, annotated, filtered, and summarized before model training.
+This section details the construction and systematic refinement of the Lao sentiment benchmark, covering data collection from digital-service platforms, the manual annotation process, and the multi-stage filtering pipeline designed to ensure dataset quality.
 
 \subsection{Data Collection}
 \label{subsec:data_collection}
@@ -191,7 +191,7 @@ Maximum word count & 66 & 77 \\
 \section{Methodology}
 \label{sec:methodology}
 
-This section formalizes the benchmark task, describes the compared PLMs and adaptation strategies, and summarizes the shared training pipeline used in the experiments.
+This section presents the formal task definition for Lao sentiment classification, introduces the selected pre-trained language models, and describes the fine-tuning strategies and training objectives employed in our modeling framework.
 
 \subsection{Problem Definition}
 \label{sec:problem_definition}
@@ -324,7 +324,7 @@ Algorithm~\ref{alg:benchmark_pipeline} summarizes the unified benchmark pipeline
 \section{Experiments}
 \label{sec:experiments}
 
-This section describes the benchmark configuration and then analyzes the main performance, error, and efficiency findings.
+This section outlines the experimental configuration, baseline selections, and evaluation metrics. We then present a comparative analysis of our findings regarding predictive performance, error patterns, and computational efficiency across the evaluated models.
 
 \subsection{Experimental Setup}
 \label{subsec:experimental_setup}
@@ -485,32 +485,110 @@ Table~\ref{tab:error_examples} illustrates this pattern qualitatively. False pos
 
 \begin{table}[H]
 \centering
-\caption{Representative fixed-split false-positive and false-negative examples selected from the aggregated error file, with brief English glosses for readability.}
+\caption{Representative Examples of Fixed-Split Error Patterns}
 \label{tab:error_examples}
+
+\small
+\textbf{REPRESENTATIVE FIXED-SPLIT FALSE-POSITIVE AND FALSE-NEGATIVE EXAMPLES SELECTED FROM THE AGGREGATED ERROR FILE, WITH BRIEF ENGLISH GLOSSES FOR READABILITY.}
+
+\par\medskip
+Examples are drawn directly from the aggregated false-positive and false-negative file across the nine fixed-split experiments.
+
+\vspace{0.5em}
+
 \ifPDFTeX
 \includegraphics[width=\textwidth]{figures/error_examples_table.pdf}
 \else
+
 \footnotesize
-\setlength{\tabcolsep}{6pt}
-\renewcommand
-{\arraystretch}{1.20}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X >{\centering\arraybackslash}m{0.085\textwidth} >{\raggedright\arraybackslash}X >{\centering\arraybackslash}m{0.085\textwidth}}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.25}
+
+\begin{tabularx}{\textwidth}{
+>{\hsize=0.95\hsize\raggedright\arraybackslash}X
+>{\centering\arraybackslash}m{0.08\textwidth}
+>{\hsize=1.05\hsize\raggedright\arraybackslash}X
+>{\centering\arraybackslash}m{0.08\textwidth}
+}
+
 \toprule
-\multicolumn{2}{c}{\textbf{False Positive}} & \multicolumn{2}{c}{\textbf{False Negative}} \\
-\cmidrule(r){1-2}\cmidrule(l){3-4}
-\textbf{Example} & \textbf{Label} & \textbf{Example} & \textbf{Label} \\
+
+\multicolumn{2}{c}{\textbf{False Positive}} &
+\multicolumn{2}{c}{\textbf{False Negative}} \\
+
+\cmidrule(r){1-2}
+\cmidrule(l){3-4}
+
+\textbf{Example} &
+\textbf{Label} &
+\textbf{Example} &
+\textbf{Label} \\
+
 \midrule
-\shortstack[l]{{\tablelaofont ບໍ ok}\\{\scriptsize\textit{not OK}}} & \multicolumn{1}{c}{0} & \shortstack[l]{{\tablelaofont ເປັນຍັງຄື ທັງຫມົດທີ່ຈຫຼີ້ນບໍ່ໄດ້}\\{\scriptsize\textit{why does nothing work?}}} & \multicolumn{1}{c}{1} \\
-\\[0.95em]
-\shortstack[l]{{\tablelaofont ປ່ຽນໂທລະສັບໃຫມ່}\\{\scriptsize\textit{changed to a new phone}}} & \multicolumn{1}{c}{0} & \shortstack[l]{{\tablelaofont ຄັກຢູ່ ແຕ່ໃຫ້ອັບເດດດຸໂພດ}\\{\scriptsize\textit{it is good, but please update it}}} & \multicolumn{1}{c}{1} \\
-\\[0.95em]
-\shortstack[l]{{\tablelaofont ເບີລະຫັດwhatsapp}\\{\scriptsize\textit{WhatsApp verification code}}} & \multicolumn{1}{c}{0} & \shortstack[l]{{\tablelaofont ແຕ່ໃຫ້ປັບປຸງໃຫ້ໄວກ່ວາເກົ່າ}\\{\scriptsize\textit{please make it faster}}} & \multicolumn{1}{c}{1} \\
-\\[0.95em]
-\shortstack[l]{{\tablelaofont bugຫລາຍ}\\{\scriptsize\textit{too many bugs}}} & \multicolumn{1}{c}{0} & \shortstack[l]{{\tablelaofont ໂຄ້ດດີ ຖ້າບໍ່ອັບເດດແອປ ແຮງຊິດີ}\\{\scriptsize\textit{the code is good, but the update hurts the app}}} & \multicolumn{1}{c}{1} \\
-\\[0.95em]
-\shortstack[l]{{\tablelaofont ແອັບຊ່າສຸດ}\\{\scriptsize\textit{the app is very slow}}} & \multicolumn{1}{c}{0} & \shortstack[l]{{\tablelaofont ຂອບເຂດສົ່ງ ກ້ວາງໄກລ ສົ່ງໄວ ບໍ່ມີບັນຫາ}\\{\scriptsize\textit{wide service area, fast delivery, no problems}}} & \multicolumn{1}{c}{1} \\
+
+{\tablelaofont ບໍ} ok
+{\scriptsize\textit{not OK}}
+&
+0
+&
+{\tablelaofont ເປັນຍັງຄື ທັງຫມົດທີ່ຈຫຼີ້ນບໍ່ໄດ້}
+
+{\scriptsize\textit{why does nothing work?}}
+&
+1 \\
+
+{\tablelaofont ປ່ຽນໂທລະສັບໃຫມ່}
+
+{\scriptsize\textit{changed to a new phone}}
+&
+0
+&
+{\tablelaofont ຄັກຢູ່ ແຕ່ໃຫ້ອັບເດດດຸໂພດ}
+
+{\scriptsize\textit{it is good, but please update it}}
+&
+1 \\
+
+{\tablelaofont ເບີລະຫັດ} whatsapp
+
+{\scriptsize\textit{WhatsApp verification code}}
+&
+0
+&
+{\tablelaofont ແຕ່ໃຫ້ປັບປຸງໃຫ້ໄວກ່ວາເກົ່າ}
+
+{\scriptsize\textit{please make it faster}}
+&
+1 \\
+
+bug {\tablelaofont ຫລາຍ}
+
+{\scriptsize\textit{too many bugs}}
+&
+0
+&
+{\tablelaofont ໂຄ້ດດີ ຖ້າບໍ່ອັບເດດແອປ ແຮງຊິດີ}
+
+{\scriptsize\textit{the code is good, but the update hurts the app}}
+&
+1 \\
+
+{\tablelaofont ແອັບຊ່າສຸດ}
+
+{\scriptsize\textit{the app is very slow}}
+&
+0
+&
+{\tablelaofont ຂອບເຂດສົ່ງ ກ້ວາງໄກລ ສົ່ງໄວ ບໍ່ມີບັນຫາ}
+
+{\scriptsize\textit{wide service area, fast delivery, no problems}}
+&
+1 \\
+
 \bottomrule
+
 \end{tabularx}
+
 \fi
 \end{table}
 
