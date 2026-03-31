@@ -13,10 +13,13 @@
 \newcommand{\tablelaofont}{}
 \else
 \usepackage{fontspec}
-\setmainfont{Times New Roman}
-\newfontfamily\laofont{Lao UI}
+% Using Saysettha OT for all Lao text since it is provided in the project
+\newfontfamily\laofont[
+  Path = ../fonts/,
+  UprightFont = saysettha_ot.ttf
+]{Saysettha OT}
 \newfontfamily\tablelaofont[
-  Path = C:/Users/LENOVO/Downloads/res/fonts/,
+  Path = ../fonts/,
   UprightFont = saysettha_ot.ttf
 ]{Saysettha OT}
 \fi
@@ -30,7 +33,7 @@
 \usepackage{graphicx}
 \usepackage{svg}
 \svgsetup{
-  inkscapeexe={"C:/Program Files/Inkscape/bin/inkscape.exe"},
+  inkscapeexe={"/usr/bin/inkscape"},
   inkscapeversion=1
 }
 \usepackage{tabularx}
@@ -488,17 +491,7 @@ Table~\ref{tab:error_examples} illustrates this pattern qualitatively. False pos
 \caption{Representative Examples of Fixed-Split Error Patterns}
 \label{tab:error_examples}
 
-\small
-\textbf{REPRESENTATIVE FIXED-SPLIT FALSE-POSITIVE AND FALSE-NEGATIVE EXAMPLES SELECTED FROM THE AGGREGATED ERROR FILE, WITH BRIEF ENGLISH GLOSSES FOR READABILITY.}
-
-\par\medskip
-Examples are drawn directly from the aggregated false-positive and false-negative file across the nine fixed-split experiments.
-
 \vspace{0.5em}
-
-\ifPDFTeX
-\includegraphics[width=\textwidth]{figures/error_examples_table.pdf}
-\else
 
 \footnotesize
 \setlength{\tabcolsep}{5pt}
@@ -555,7 +548,7 @@ Examples are drawn directly from the aggregated false-positive and false-negativ
 &
 0
 &
-{\tablelaofont ແຕ່ໃຫ້ປັບປຸງໃຫ້ໄວກ່ວາເກົ່າ}
+{\tablelaofont ແຕ່ໃຫ້ປັບປຸງໃຫ້ໄວກ່ວาເກົ່າ}
 
 {\scriptsize\textit{please make it faster}}
 &
@@ -588,8 +581,6 @@ bug {\tablelaofont ຫລາຍ}
 \bottomrule
 
 \end{tabularx}
-
-\fi
 \end{table}
 
 Figure~\ref{fig:short_fail_wordcloud} provides a complementary phrase-level view of the same error set using the 30 most frequent short false-positive and false-negative samples. This visualization is intended as a qualitative summary of recurring failure expressions rather than as a replacement for the quantitative counts in Figure~\ref{fig:error_analysis}.
