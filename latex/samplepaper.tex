@@ -31,6 +31,7 @@
 \usepackage{algpseudocode}
 \usepackage{titlesec}
 \usepackage{graphicx}
+\usepackage[table]{xcolor}
 \usepackage{svg}
 \svgsetup{
   inkscapeexe={"/usr/bin/inkscape"},
@@ -38,7 +39,6 @@
 }
 \usepackage{tabularx}
 \usepackage{textcomp}
-\usepackage[table]{xcolor}
 \usepackage{siunitx}
 \sisetup{
   detect-weight=true,
@@ -105,24 +105,29 @@ In this work, we study Lao sentiment classification using reviews collected from
 \item We construct and analyze a Lao sentiment dataset from real mobile application reviews used in Laos, and we document the filtering steps that produce the final train and validation splits.
 \item We benchmark three pre-trained language models, namely XLM-RoBERTa, mBERT, and mBERT-Lao, under Full Fine-tuning, LoRA, and 3-Fold Cross-Validation settings, and we compare them against Logistic Regression, SVM, and Decision Tree baselines.
 \item We report predictive performance, error patterns, and training efficiency so that model quality and training cost can be examined together.
+
 \end{itemize}
+
 
 The remainder of this paper is organized as follows. Section~\ref{sec:related_work} reviews related work on sentiment analysis, low-resource language processing, and pre-trained language models. Section~\ref{sec:dataset} describes dataset construction and analysis, including data collection, annotation, preprocessing, and descriptive statistics. Section~\ref{sec:methodology} then formulates the task, defines the evaluation protocol, and presents the modeling framework and fine-tuning strategies. Section~\ref{sec:experiments} reports the experimental setup, results, and discussion. Finally, Section~\ref{sec:conclusion} concludes the paper and outlines future directions.
 
 \section{Related Work}
 \label{sec:related_work}
 
-Sentiment analysis is widely used to summarize user opinions from reviews, ratings, and social media posts, so it remains relevant to both e-commerce and broader digital-service platforms. Recent surveys show that review-level polarity classification remains the most common setting \cite{tan2023survey,alahmadi2025generalizing}. A related but distinct line of work studies aspect-level sentiment analysis, where the goal is to identify which product or service attributes trigger positive or negative feedback \cite{zhang2022survey,chebolu2023review,mir2025application,vsmid2025cross,wu2025m}. In the present study, we focus on review-level polarity because the Lao app-review dataset contains one short opinion per entry and does not include aspect annotations.
+The evolution of Lao sentiment analysis has followed the broader trajectory of pre-trained language model (PLM) development and low-resource adaptation. As illustrated in Figure~\ref{fig:timeline}, the progress spans from general multilingual baselines to dedicated Lao-specific benchmarks. 
 
-Domain effects are important because sentiment expressions vary across application types and user communities. Studies on Tamil and Tulu sentiment classification report that code-mixing, informal spelling, domain variation, and dataset imbalance can noticeably reduce robustness, especially for traditional machine learning models \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview,alahmadi2025generalizing}. Similar issues appear in Lao app reviews, where many comments are short, colloquial, and tied to specific application behaviors such as login errors, transaction problems, or service satisfaction. These properties make domain-aware evaluation necessary even when the task is framed as simple review-level sentiment classification.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/LaosSA.png}
+\caption{Timeline of progress toward Lao sentiment analysis, showing the evolution from multilingual baselines and monolingual pre-trained models to the current LaoSA sentiment benchmark.}
+\label{fig:timeline}
+\end{figure}
 
-Low-resource language processing is still constrained by the lack of large corpora, annotated benchmarks, and mature preprocessing tools. For Lao, this limitation has been noted in work on word segmentation, text classification, and broader resource construction \cite{lin2022laoplm,nguyen2025semi}. Because Lao is written as a continuous script, preprocessing itself can become a source of error: tokenization and boundary detection are less straightforward than in whitespace-delimited languages \cite{nguyen2025semi}. This challenge is directly relevant to the current dataset, where many user reviews are very short and noisy.
+Early progress was marked by the introduction of multilingual BERT (mBERT) in 2019 \cite{devlin2019bert}, which provided the first massive transformer pre-training for over 100 languages, including zero-shot capabilities for low-resource scripts. However, a major limitation of mBERT remains its sub-optimal representation of Lao due to a shared vocabulary that assigns limited capacity to low-resource languages, often resulting in fragmented subword tokens for continuous scripts. This was partially addressed by XLM-RoBERTa (XLM-R) in 2020 \cite{conneau2020unsupervised}, which scaled up training data and refined cross-lingual representations. While XLM-R demonstrates significantly stronger zero-shot and few-shot performance, its primary limitation in the Lao context remains its generic pre-training objective, which does not explicitly account for the specific character boundaries or the noisy, informal code-mixing prevalent in modern digital communication.
 
-To address these limitations, recent work on under-resourced languages relies heavily on transfer learning. Recent surveys of low-resource sentiment analysis highlight multilingual PLMs, few-shot transfer, and cross-lingual learning as common strategies \cite{lamin2025cross}, while broader multilingual NLP studies explain why transfer-based evaluation remains important in low-resource settings \cite{ruder2021xtreme,han2021pre}. At a broader regional level, cross-lingual representation alignment for ASEAN languages suggests that neighboring-language transfer can still provide useful signals for Lao when direct resources are scarce \cite{zhang2024cross}. For Lao, such methods are useful because labeled data remains limited, although their effectiveness can still vary with language coverage and domain mismatch. This motivates testing both multilingual models and a Lao-supporting model on the same review dataset.
+The landscape shifted in 2022 with the introduction of LaoPLM \cite{lin2022laoplm}, the first dedicated Lao-specific pre-trained model. Its strength lies in its ability to outperform generic multilingual models on formal Lao text classification by leveraging monolingual pre-training. Nevertheless, the evaluations in LaoPLM were constrained by relatively small datasets and formal registers, leaving the task of analyzing noisy, colloquial mobile app reviews largely unaddressed. More recently, in 2025, efforts by Nguyen et al. \cite{nguyen2025semi} established a semi-supervised word-segmented corpus using large language models. While this work successfully expanded the dataset resources for Lao, the focus remained on categorization and resource generation rather than on the nuanced polarity shifts found in short-text sentiments.
 
-Pre-trained language models are now the dominant backbone for text classification because they provide contextualized representations that can be adapted across tasks \cite{han2021pre,min2023recent}. For Lao, the distinction between monolingual and multilingual PLMs is particularly important \cite{lin2022laoplm}. A Lao-oriented model can better reflect local tokenization behavior and lexical patterns, whereas multilingual models benefit from broader pretraining but may devote less capacity to low-resource languages \cite{lin2022laoplm,ruder2021xtreme,han2021pre}.
-
-Recent low-resource sentiment studies still report clear gains from transformer-based models, but they also show that performance depends on language fit, adaptation strategy, and dataset characteristics \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview}. This is why our experiments compare XLM-RoBERTa and mBERT with mBERT-Lao, and also keep strong sparse baselines in the benchmark.
+Our work (LaoSA, 2026) represents the next milestone by addressing these gaps across three dimensions: scale, domain, and adaptation strategy. Unlike prior benchmarks, LaosSA provides a large-scale (25,139 samples) filtered dataset specifically curated from mobile application reviews, capturing real-world noise and code-mixed patterns. Furthermore, we evaluate both full fine-tuning and parameter-efficient adaptation (LoRA) to establish practical deployment baselines that were previously underexplored for the Lao digital ecosystem.
 
 \section{Dataset Construction and Analysis}
 \label{sec:dataset}
