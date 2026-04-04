@@ -1,5 +1,6 @@
 from transformers import AutoConfig, AutoModelForSequenceClassification
 
+from sentiment_classification.models.textcnn import TextCNNConfig, TextCNNForSequenceClassification
 from sentiment_classification.utils.config import DEFAULT_LORA_CONFIG
 
 
@@ -11,7 +12,22 @@ def build_sequence_classification_model(
     lora_config=None,
     init_from_pretrained: bool = True,
     config_name: str = None,
+    architecture_type: str = "transformer",
+    model_kwargs=None,
+    vocab_size: int = None,
+    pad_token_id: int = 0,
 ):
+    merged_model_kwargs = dict(model_kwargs or {})
+
+    if architecture_type == "textcnn":
+        model_config = TextCNNConfig(
+            vocab_size=vocab_size or merged_model_kwargs.pop("vocab_size", 32000),
+            pad_token_id=pad_token_id,
+            num_labels=num_labels,
+            **merged_model_kwargs,
+        )
+        return TextCNNForSequenceClassification(model_config)
+
     if init_from_pretrained:
         model = AutoModelForSequenceClassification.from_pretrained(
             model_name,

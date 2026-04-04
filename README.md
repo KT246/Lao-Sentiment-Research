@@ -1,14 +1,14 @@
 # Lao Sentiment Research
 
-This repository contains the training pipeline for Lao sentiment classification with three model families and three training strategies.
+This repository contains the training pipeline for Lao sentiment classification with transformer models, sklearn baselines, and one custom neural baseline trained from scratch.
 
 ## What is implemented
 
 - Models:
   - `xlm-roberta` -> `xlm-roberta-base`
-  - `xlm-roberta-scratch` -> `xlm-roberta-base` architecture with random initialization (no pretrained weights)
   - `mbert` -> `bert-base-multilingual-cased`
   - `mbert-lao` -> `w11wo/lao-roberta-base` (current placeholder for Lao-specific setup)
+  - `textcnn` -> custom TextCNN with random initialization
 - Training modes:
   - `full-finetuning`
   - `from-scratch`
@@ -95,9 +95,9 @@ Run from scratch:
 
 ```bash
 python src/sentiment_classification/scripts/train.py \
-  --model_key xlm-roberta-scratch \
+  --model_key textcnn \
   --training_mode from-scratch \
-  --output_dir outputs/experiment/xlm-roberta-scratch-training
+  --output_dir outputs/experiment/textcnn-training
 ```
 
 Run K-Fold=3:
@@ -116,10 +116,10 @@ If you want cross-validation to use `train + val` together, add:
 --cv_include_val
 ```
 
-Scratch baseline note:
+TextCNN baseline note:
 
-- `xlm-roberta-scratch` reuses the `xlm-roberta-base` tokenizer/config but initializes model weights randomly.
-- `LoRA` is intentionally disabled for scratch models because it is designed for pretrained backbones.
+- `textcnn` uses the `xlm-roberta-base` tokenizer for subword IDs, but its embedding/CNN/classifier weights are randomly initialized.
+- `textcnn` supports `from-scratch` and `cross-validation`; `LoRA` is intentionally disabled.
 
 ## Outputs
 
@@ -154,7 +154,7 @@ Create one branch per experiment family, for example:
 - `experiment/xlm-roberta-finetuning`
 - `experiment/xlm-roberta-lora`
 - `experiment/xlm-roberta-cross-validation`
-- `experiment/xlm-roberta-scratch-training`
-- `experiment/xlm-roberta-scratch-cross-validation`
+- `experiment/textcnn-training`
+- `experiment/textcnn-cross-validation`
 
 The same naming pattern can be used for `mbert` and `mbert-lao`.

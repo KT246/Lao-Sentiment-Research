@@ -6,8 +6,8 @@ Suggested branches:
 - `experiment/xlm-roberta-finetuning`
 - `experiment/xlm-roberta-lora`
 - `experiment/xlm-roberta-cross-validation`
-- `experiment/xlm-roberta-scratch-training`
-- `experiment/xlm-roberta-scratch-cross-validation`
+- `experiment/textcnn-training`
+- `experiment/textcnn-cross-validation`
 - `experiment/mbert-finetuning`
 - `experiment/mbert-lora`
 - `experiment/mbert-cross-validation`
@@ -20,4 +20,4 @@ Common behavior:
 - Each run saves hardware info.
 - Each run saves prediction CSV outputs.
 - Each run saves timing metrics with average epoch time.
-- Scratch runs use random model initialization and do not support LoRA.
+- `textcnn` is trained from scratch with randomly initialized embeddings/CNN layers and does not support LoRA.

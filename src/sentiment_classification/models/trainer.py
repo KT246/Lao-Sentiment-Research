@@ -108,6 +108,8 @@ def setup_trainer(
     lora_config=None,
     init_from_pretrained: bool = True,
     config_name: str = None,
+    architecture_type: str = "transformer",
+    model_kwargs=None,
 ):
     timing_callback = EpochTimingCallback()
     has_eval_dataset = eval_dataset is not None
@@ -121,6 +123,10 @@ def setup_trainer(
         lora_config=lora_config,
         init_from_pretrained=init_from_pretrained,
         config_name=config_name,
+        architecture_type=architecture_type,
+        model_kwargs=model_kwargs,
+        vocab_size=len(tokenizer) if tokenizer is not None else None,
+        pad_token_id=tokenizer.pad_token_id if tokenizer is not None and tokenizer.pad_token_id is not None else 0,
     )
 
     training_args = TrainingArguments(

@@ -59,6 +59,13 @@ def compute_class_weights_tensor(labels, num_labels: int):
 def validate_experiment_configuration(args, model_config, mode_config):
     init_from_pretrained = model_config.get("init_from_pretrained", True)
     supports_lora = model_config.get("supports_lora", True)
+    supported_training_modes = model_config.get("supported_training_modes")
+
+    if supported_training_modes and args.training_mode not in supported_training_modes:
+        raise ValueError(
+            f"Model '{args.model_key}' supports training modes {supported_training_modes}, "
+            f"but received '{args.training_mode}'."
+        )
 
     if mode_config.get("requires_random_init", False) and init_from_pretrained:
         raise ValueError(
@@ -106,12 +113,13 @@ def save_best_model_artifacts(trainer, output_dir):
 def prepare_runtime_metadata(args, model_config, mode_config):
     init_from_pretrained = model_config.get("init_from_pretrained", True)
     tokenizer_name = model_config.get("tokenizer_name", model_config["hf_name"])
-    config_name = model_config.get("config_name", model_config["hf_name"])
+    config_name = model_config.get("config_name")
 
     metadata = {
         "model_key": args.model_key,
         "model_name": model_config["hf_name"],
         "display_name": model_config.get("display_name"),
+        "architecture_type": model_config.get("architecture_type", "transformer"),
         "training_mode": args.training_mode,
         "use_lora": mode_config["use_lora"],
         "use_cross_validation": mode_config["use_cross_validation"],
@@ -131,6 +139,9 @@ def prepare_runtime_metadata(args, model_config, mode_config):
         "cv_include_val": args.cv_include_val if mode_config["use_cross_validation"] else False,
         "seed": args.seed
     }
+
+    if model_config.get("model_kwargs"):
+        metadata["model_hyperparameters"] = model_config["model_kwargs"]
 
     if mode_config["use_lora"]:
         metadata["lora"] = {
@@ -176,7 +187,9 @@ def run_single_training(train_df, val_df, args, model_config, mode_config, outpu
             "lora_dropout": args.lora_dropout
         },
         init_from_pretrained=model_config.get("init_from_pretrained", True),
-        config_name=model_config.get("config_name", model_config["hf_name"])
+        config_name=model_config.get("config_name"),
+        architecture_type=model_config.get("architecture_type", "transformer"),
+        model_kwargs=model_config.get("model_kwargs")
     )
 
     trainer.train()
@@ -235,7 +248,9 @@ def run_cross_validation(full_df, args, model_config, mode_config, output_dir):
                 "lora_dropout": args.lora_dropout
             },
             init_from_pretrained=model_config.get("init_from_pretrained", True),
-            config_name=model_config.get("config_name", model_config["hf_name"])
+            config_name=model_config.get("config_name"),
+            architecture_type=model_config.get("architecture_type", "transformer"),
+            model_kwargs=model_config.get("model_kwargs")
         )
 
         trainer.train()
