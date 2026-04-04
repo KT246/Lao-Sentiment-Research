@@ -105,7 +105,9 @@ def setup_trainer(
     class_weights=None,
     use_lora: bool = False,
     lora_target_modules=None,
-    lora_config=None
+    lora_config=None,
+    init_from_pretrained: bool = True,
+    config_name: str = None,
 ):
     timing_callback = EpochTimingCallback()
     has_eval_dataset = eval_dataset is not None
@@ -116,7 +118,9 @@ def setup_trainer(
         num_labels=num_labels,
         use_lora=use_lora,
         lora_target_modules=lora_target_modules,
-        lora_config=lora_config
+        lora_config=lora_config,
+        init_from_pretrained=init_from_pretrained,
+        config_name=config_name,
     )
 
     training_args = TrainingArguments(

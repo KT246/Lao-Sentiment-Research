@@ -56,6 +56,23 @@ def compute_class_weights_tensor(labels, num_labels: int):
     return torch.tensor(full_weights, dtype=torch.float32)
 
 
+def validate_experiment_configuration(args, model_config, mode_config):
+    init_from_pretrained = model_config.get("init_from_pretrained", True)
+    supports_lora = model_config.get("supports_lora", True)
+
+    if mode_config.get("requires_random_init", False) and init_from_pretrained:
+        raise ValueError(
+            f"Training mode '{args.training_mode}' requires a randomly initialized model, "
+            f"but model '{args.model_key}' is configured to load pretrained weights."
+        )
+
+    if mode_config["use_lora"] and not supports_lora:
+        raise ValueError(
+            f"Model '{args.model_key}' does not support LoRA mode because it is configured "
+            "for from-scratch training. Use 'from-scratch' or 'cross-validation' instead."
+        )
+
+
 def build_prediction_dataframe(source_df, predictions_output, extra_columns=None):
     logits = predictions_output.predictions
     predicted_labels = np.argmax(logits, axis=1)
@@ -87,12 +104,21 @@ def save_best_model_artifacts(trainer, output_dir):
 
 
 def prepare_runtime_metadata(args, model_config, mode_config):
+    init_from_pretrained = model_config.get("init_from_pretrained", True)
+    tokenizer_name = model_config.get("tokenizer_name", model_config["hf_name"])
+    config_name = model_config.get("config_name", model_config["hf_name"])
+
     metadata = {
         "model_key": args.model_key,
         "model_name": model_config["hf_name"],
+        "display_name": model_config.get("display_name"),
         "training_mode": args.training_mode,
         "use_lora": mode_config["use_lora"],
         "use_cross_validation": mode_config["use_cross_validation"],
+        "initialization_strategy": "pretrained" if init_from_pretrained else "scratch",
+        "tokenizer_name": tokenizer_name,
+        "config_name": config_name,
+        "pretrained_checkpoint": model_config["hf_name"] if init_from_pretrained else None,
         "epochs": args.epochs,
         "batch_size": args.batch_size,
         "eval_batch_size": args.eval_batch_size,
@@ -116,11 +142,11 @@ def prepare_runtime_metadata(args, model_config, mode_config):
     return metadata
 
 
-def run_single_training(train_df, val_df, args, model_config, output_dir):
+def run_single_training(train_df, val_df, args, model_config, mode_config, output_dir):
     tokenized_datasets, tokenizer = build_tokenized_dataset_dict(
         train_df=train_df,
         val_df=val_df,
-        tokenizer_name=model_config["hf_name"],
+        tokenizer_name=model_config.get("tokenizer_name", model_config["hf_name"]),
         max_length=args.max_length,
         padding=args.padding
     )
@@ -142,13 +168,15 @@ def run_single_training(train_df, val_df, args, model_config, output_dir):
         save_strategy=args.save_strategy,
         seed=args.seed,
         class_weights=class_weights_tensor,
-        use_lora=args.training_mode == "lora",
+        use_lora=mode_config["use_lora"],
         lora_target_modules=model_config["lora_target_modules"],
         lora_config={
             "r": args.lora_r,
             "lora_alpha": args.lora_alpha,
             "lora_dropout": args.lora_dropout
-        }
+        },
+        init_from_pretrained=model_config.get("init_from_pretrained", True),
+        config_name=model_config.get("config_name", model_config["hf_name"])
     )
 
     trainer.train()
@@ -162,7 +190,7 @@ def run_single_training(train_df, val_df, args, model_config, output_dir):
     save_json(get_trainable_parameter_stats(model), os.path.join(output_dir, "trainable_params.json"))
 
 
-def run_cross_validation(full_df, args, model_config, output_dir):
+def run_cross_validation(full_df, args, model_config, mode_config, output_dir):
     splitter = StratifiedKFold(n_splits=args.num_folds, shuffle=True, random_state=args.seed)
     fold_prediction_frames = []
     fold_timing_summaries = []
@@ -177,7 +205,7 @@ def run_cross_validation(full_df, args, model_config, output_dir):
         tokenized_datasets, tokenizer = build_tokenized_dataset_dict(
             train_df=fold_train_df,
             val_df=fold_val_df,
-            tokenizer_name=model_config["hf_name"],
+            tokenizer_name=model_config.get("tokenizer_name", model_config["hf_name"]),
             max_length=args.max_length,
             padding=args.padding
         )
@@ -198,7 +226,16 @@ def run_cross_validation(full_df, args, model_config, output_dir):
             weight_decay=args.weight_decay,
             save_strategy=args.save_strategy,
             seed=args.seed + fold_index,
-            class_weights=class_weights_tensor
+            class_weights=class_weights_tensor,
+            use_lora=mode_config["use_lora"],
+            lora_target_modules=model_config["lora_target_modules"],
+            lora_config={
+                "r": args.lora_r,
+                "lora_alpha": args.lora_alpha,
+                "lora_dropout": args.lora_dropout
+            },
+            init_from_pretrained=model_config.get("init_from_pretrained", True),
+            config_name=model_config.get("config_name", model_config["hf_name"])
         )
 
         trainer.train()
@@ -241,6 +278,9 @@ def main():
     args = parse_args()
     model_config = MODEL_REGISTRY[args.model_key]
     mode_config = TRAINING_MODE_REGISTRY[args.training_mode]
+    validate_experiment_configuration(args, model_config, mode_config)
+
+    initialization_strategy = "pretrained" if model_config.get("init_from_pretrained", True) else "scratch"
 
     os.makedirs(args.output_dir, exist_ok=True)
     save_json(get_hardware_info(), os.path.join(args.output_dir, "hardware_metrics.json"))
@@ -257,12 +297,26 @@ def main():
         len(train_df),
         len(val_df)
     )
+    logger.info("Model initialization strategy=%s", initialization_strategy)
 
     if mode_config["use_cross_validation"]:
         full_df = pd.concat([train_df, val_df], ignore_index=True) if args.cv_include_val else train_df.copy()
-        run_cross_validation(full_df=full_df, args=args, model_config=model_config, output_dir=args.output_dir)
+        run_cross_validation(
+            full_df=full_df,
+            args=args,
+            model_config=model_config,
+            mode_config=mode_config,
+            output_dir=args.output_dir
+        )
     else:
-        run_single_training(train_df=train_df, val_df=val_df, args=args, model_config=model_config, output_dir=args.output_dir)
+        run_single_training(
+            train_df=train_df,
+            val_df=val_df,
+            args=args,
+            model_config=model_config,
+            mode_config=mode_config,
+            output_dir=args.output_dir
+        )
 
     logger.info("Experiment completed successfully.")
 

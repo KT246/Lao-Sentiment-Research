@@ -6,10 +6,12 @@ This repository contains the training pipeline for Lao sentiment classification 
 
 - Models:
   - `xlm-roberta` -> `xlm-roberta-base`
+  - `xlm-roberta-scratch` -> `xlm-roberta-base` architecture with random initialization (no pretrained weights)
   - `mbert` -> `bert-base-multilingual-cased`
   - `mbert-lao` -> `w11wo/lao-roberta-base` (current placeholder for Lao-specific setup)
 - Training modes:
   - `full-finetuning`
+  - `from-scratch`
   - `lora`
   - `cross-validation` (`K=3`)
 - During training:
@@ -89,6 +91,15 @@ python src/sentiment_classification/scripts/train.py \
   --output_dir outputs/experiment/xlm-roberta-lora
 ```
 
+Run from scratch:
+
+```bash
+python src/sentiment_classification/scripts/train.py \
+  --model_key xlm-roberta-scratch \
+  --training_mode from-scratch \
+  --output_dir outputs/experiment/xlm-roberta-scratch-training
+```
+
 Run K-Fold=3:
 
 ```bash
@@ -105,9 +116,14 @@ If you want cross-validation to use `train + val` together, add:
 --cv_include_val
 ```
 
+Scratch baseline note:
+
+- `xlm-roberta-scratch` reuses the `xlm-roberta-base` tokenizer/config but initializes model weights randomly.
+- `LoRA` is intentionally disabled for scratch models because it is designed for pretrained backbones.
+
 ## Outputs
 
-Single split (`full-finetuning`, `lora`) output folder contains:
+Single split (`full-finetuning`, `from-scratch`, `lora`) output folder contains:
 
 - `best_model/`
 - `best_model_info.json`
@@ -138,5 +154,7 @@ Create one branch per experiment family, for example:
 - `experiment/xlm-roberta-finetuning`
 - `experiment/xlm-roberta-lora`
 - `experiment/xlm-roberta-cross-validation`
+- `experiment/xlm-roberta-scratch-training`
+- `experiment/xlm-roberta-scratch-cross-validation`
 
 The same naming pattern can be used for `mbert` and `mbert-lao`.

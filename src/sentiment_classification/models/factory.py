@@ -1,4 +1,4 @@
-from transformers import AutoModelForSequenceClassification
+from transformers import AutoConfig, AutoModelForSequenceClassification
 
 from sentiment_classification.utils.config import DEFAULT_LORA_CONFIG
 
@@ -8,12 +8,22 @@ def build_sequence_classification_model(
     num_labels: int,
     use_lora: bool = False,
     lora_target_modules=None,
-    lora_config=None
+    lora_config=None,
+    init_from_pretrained: bool = True,
+    config_name: str = None,
 ):
-    model = AutoModelForSequenceClassification.from_pretrained(
-        model_name,
-        num_labels=num_labels
-    )
+    if init_from_pretrained:
+        model = AutoModelForSequenceClassification.from_pretrained(
+            model_name,
+            num_labels=num_labels
+        )
+    else:
+        resolved_config_name = config_name or model_name
+        model_config = AutoConfig.from_pretrained(
+            resolved_config_name,
+            num_labels=num_labels
+        )
+        model = AutoModelForSequenceClassification.from_config(model_config)
 
     if not use_lora:
         return model
