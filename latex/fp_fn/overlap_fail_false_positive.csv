@@ -1,9 +1,8 @@
 ﻿error_type,text,n_experiments,occurrences,model_list,true_label,predicted_label
-false_positive,ດາວໂຫຍ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
-false_positive,ບໍ ok,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
-false_positive,ປ່ຽນໂທລະສັບໃຫມ່,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
-false_positive,ລອງຈອງເບີ່ງກ່ອນເດີຮາ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
-false_positive,ຫົງ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
-false_positive,ອານຸມັດໃຫ້ແດ່ເບີກະໃສ່ແລ້ວ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
-false_positive,ເບີລະຫັດwhatsapp,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
-false_positive,ເປໄຖັ,9,9,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ດາວໂຫຍ,10,10,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, textcnn-training, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ບໍ ok,10,10,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, textcnn-training, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ປ່ຽນໂທລະສັບໃຫມ່,10,10,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, textcnn-training, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ລອງຈອງເບີ່ງກ່ອນເດີຮາ,10,10,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, textcnn-training, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ຫົງ,10,10,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, textcnn-training, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ເບີລະຫັດwhatsapp,10,10,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, textcnn-training, xlm-roberta-finetuning, xlm-roberta-lora",0,1
+false_positive,ເປໄຖັ,10,10,"decision-tree, logistic-regression, mbert-finetuning, mbert-lao-finetuning, mbert-lao-lora, mbert-lora, svm, textcnn-training, xlm-roberta-finetuning, xlm-roberta-lora",0,1

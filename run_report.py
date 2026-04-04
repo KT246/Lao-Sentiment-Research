@@ -14,22 +14,25 @@ MODEL_ORDER = {
     "xlm-roberta": 0,
     "mbert": 1,
     "mbert-lao": 2,
-    "logistic-regression": 3,
-    "svm": 4,
-    "decision-tree": 5,
+    "textcnn": 3,
+    "logistic-regression": 4,
+    "svm": 5,
+    "decision-tree": 6,
 }
 
 MODE_ORDER = {
     "baseline": 0,
-    "full-finetuning": 1,
-    "lora": 2,
-    "cross-validation": 3,
+    "from-scratch": 1,
+    "full-finetuning": 2,
+    "lora": 3,
+    "cross-validation": 4,
 }
 
 MODEL_DISPLAY = {
     "xlm-roberta": "XLM-RoBERTa",
     "mbert": "mBERT",
     "mbert-lao": "mBERT-Lao",
+    "textcnn": "TextCNN",
     "logistic-regression": "Logistic Regression",
     "svm": "SVM",
     "decision-tree": "Decision Tree",
@@ -37,6 +40,7 @@ MODEL_DISPLAY = {
 
 MODE_DISPLAY = {
     "baseline": "Baseline",
+    "from-scratch": "From Scratch",
     "full-finetuning": "Full Fine-tuning",
     "lora": "LoRA",
     "cross-validation": "Cross-Validation",

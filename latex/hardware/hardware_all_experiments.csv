@@ -8,6 +8,8 @@ mbert-lao-finetuning,mbert-lao,mBERT-Lao,full-finetuning,Full Fine-tuning,1,2,0.
 mbert-lao-lora,mbert-lao,mBERT-Lao,lora,LoRA,1,2,0.0,2000.158,54.8,12.67,10.83,1.53,14.5,1,Tesla T4,14.56
 mbert-lora,mbert,mBERT,lora,LoRA,1,2,0.0,2000.14,2.5,12.67,10.8,1.56,14.8,1,Tesla T4,14.56
 svm,svm,SVM,baseline,Baseline,1,2,0.0,2000.144,2.0,12.67,11.06,1.3,12.7,1,Tesla T4,14.56
+textcnn-cross-validation,textcnn,TextCNN,cross-validation,3-Fold Cross-Validation,1,2,0.0,2000.182,2.0,12.67,10.92,1.43,13.8,1,Tesla T4,14.56
+textcnn-training,textcnn,TextCNN,from-scratch,From Scratch,1,2,0.0,2000.182,23.6,12.67,10.84,1.52,14.4,1,Tesla T4,14.56
 xlm-roberta-cross-validation,xlm-roberta,XLM-RoBERTa,cross-validation,3-Fold Cross-Validation,1,2,0.0,2000.146,1.5,12.67,10.81,1.54,14.7,1,Tesla T4,14.56
 xlm-roberta-finetuning,xlm-roberta,XLM-RoBERTa,full-finetuning,Full Fine-tuning,1,2,0.0,2000.156,7.5,12.67,10.95,1.41,13.6,1,Tesla T4,14.56
 xlm-roberta-lora,xlm-roberta,XLM-RoBERTa,lora,LoRA,1,2,0.0,2000.156,5.0,12.67,10.81,1.55,14.7,1,Tesla T4,14.56

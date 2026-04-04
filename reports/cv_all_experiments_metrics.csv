@@ -8,6 +8,8 @@ mbert-cross-validation,mBERT (Cross-Validation),mbert,mBERT,cross-validation,Cro
 mbert-lao-finetuning,mBERT-Lao (Full Fine-tuning),mbert-lao,mBERT-Lao,full-finetuning,Full Fine-tuning,5028,0.940732,0.932815,0.924114,0.943745
 mbert-lao-lora,mBERT-Lao (LoRA),mbert-lao,mBERT-Lao,lora,LoRA,5028,0.932578,0.923464,0.915369,0.933505
 mbert-lao-cross-validation,mBERT-Lao (Cross-Validation),mbert-lao,mBERT-Lao,cross-validation,Cross-Validation,20111,0.937497,0.928494,0.922824,0.934983
+textcnn-training,TextCNN (From Scratch),textcnn,TextCNN,from-scratch,From Scratch,5028,0.947693,0.940265,0.933799,0.947786
+textcnn-cross-validation,TextCNN (Cross-Validation),textcnn,TextCNN,cross-validation,Cross-Validation,20111,0.933867,0.924203,0.919226,0.929803
 logistic-regression,Logistic Regression (Baseline),logistic-regression,Logistic Regression,baseline,Baseline,5028,0.945107,0.937038,0.932175,0.942463
 svm,SVM (Baseline),svm,SVM,baseline,Baseline,5028,0.950477,0.943571,0.936293,0.952222
 decision-tree,Decision Tree (Baseline),decision-tree,Decision Tree,baseline,Baseline,5028,0.887828,0.872124,0.866196,0.879233

@@ -11,6 +11,7 @@ MODEL_DISPLAY_NAMES = {
     "xlm-roberta": "XLM-RoBERTa",
     "mbert": "mBERT",
     "mbert-lao": "mBERT-Lao",
+    "textcnn": "TextCNN",
     "logistic-regression": "Logistic Regression",
     "svm": "SVM",
     "decision-tree": "Decision Tree",
@@ -18,6 +19,7 @@ MODEL_DISPLAY_NAMES = {
 
 
 TRAINING_MODE_DISPLAY = {
+    "from-scratch": "From Scratch",
     "full-finetuning": "Full Fine-tuning",
     "lora": "LoRA",
     "cross-validation": "3-Fold Cross-Validation",

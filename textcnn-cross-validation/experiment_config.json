@@ -1,0 +1,34 @@
+{
+    "model_key": "textcnn",
+    "model_name": "textcnn",
+    "display_name": "TextCNN (from scratch)",
+    "architecture_type": "textcnn",
+    "training_mode": "cross-validation",
+    "use_lora": false,
+    "use_cross_validation": true,
+    "initialization_strategy": "scratch",
+    "tokenizer_name": "xlm-roberta-base",
+    "config_name": null,
+    "pretrained_checkpoint": null,
+    "epochs": 25,
+    "batch_size": 16,
+    "eval_batch_size": 32,
+    "max_length": 128,
+    "padding": "max_length",
+    "learning_rate": 1e-05,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "num_folds": 3,
+    "cv_include_val": false,
+    "seed": 42,
+    "model_hyperparameters": {
+        "embedding_dim": 128,
+        "num_filters": 128,
+        "kernel_sizes": [
+            3,
+            4,
+            5
+        ],
+        "dropout": 0.3
+    }
+}

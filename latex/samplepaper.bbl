@@ -62,40 +62,38 @@ T.~Durairaj, B.~R. Chakravarthi, A.~Hegde, H.~L. Shashirekha, R.~Natarajan,
   and tulu,'' in \emph{Proceedings of the Fifth Workshop on Speech, Vision, and
   Language Technologies for Dravidian Languages}, 2025, pp. 732--738.
 
-\bibitem{zhang2022survey}
-W.~Zhang, X.~Li, Y.~Deng, L.~Bing, and W.~Lam, ``A survey on aspect-based
-  sentiment analysis: Tasks, methods, and challenges,'' \emph{IEEE Transactions
-  on Knowledge and Data Engineering}, vol.~35, no.~11, pp. 11\,019--11\,038,
-  2022.
+\bibitem{devlin2019bert}
+J.~Devlin, M.-W. Chang, K.~Lee, and K.~Toutanova, ``Bert: Pre-training of deep
+  bidirectional transformers for language understanding,'' in \emph{Proceedings
+  of the 2019 Conference of the North American Chapter of the Association for
+  Computational Linguistics: Human Language Technologies, Volume 1 (Long and
+  Short Papers)}, 2019, pp. 4171--4186.
 
-\bibitem{chebolu2023review}
-S.~U.~S. Chebolu, F.~Dernoncourt, N.~Lipka, and T.~Solorio, ``A review of
-  datasets for aspect-based sentiment analysis,'' in \emph{Proceedings of the
-  13th International Joint Conference on Natural Language Processing and the
-  3rd Conference of the Asia-Pacific Chapter of the Association for
-  Computational Linguistics (Volume 1: Long Papers)}, 2023, pp. 611--628.
+\bibitem{conneau2020unsupervised}
+A.~Conneau, K.~Khandelwal, N.~Goyal, V.~Chaudhary, G.~Wenzek, F.~Guzm{\'a}n,
+  E.~Grave, M.~Ott, L.~Zettlemoyer, and V.~Stoyanov, ``Unsupervised
+  cross-lingual representation learning at scale,'' in \emph{Proceedings of the
+  58th Annual Meeting of the Association for Computational Linguistics}, 2020,
+  pp. 8440--8451.
 
-\bibitem{mir2025application}
-J.~Mir, A.~Mahmood, S.~Khatoon, S.~Hussain, S.~S. Ullah, and J.~Iqbal,
-  ``Application domains of aspect and sentiment classification techniques: A
-  survey,'' \emph{Neurocomputing}, vol. 622, p. 129237, 2025.
+\bibitem{pham2026vietnamese_ecommerce}
+Q.-V. Pham, N.-H. Dang, P.-L. Tran, and Q.-H. Le, ``Fine-tuning pre-trained
+  language models for vietnamese sentiment classification in e-commerce,'' in
+  \emph{Computational Intelligence in Engineering Science}, N.~T. Nguyen, A.-C.
+  Le, T.~D. Tran, T.-P. Hong, Y.~Manolopoulos, N.~A. Le~Khac, P.~Tran~Tin, and
+  V.-N. Huynh, Eds.\hskip 1em plus 0.5em minus 0.4em\relax Cham: Springer
+  Nature Switzerland, 2026, pp. 160--174.
 
-\bibitem{vsmid2025cross}
-J.~{\v{S}}m{\'\i}d and P.~Kral, ``Cross-lingual aspect-based sentiment
-  analysis: A survey on tasks, approaches, and challenges,'' \emph{Information
-  Fusion}, vol. 120, p. 103073, 2025.
+\bibitem{han2021pre}
+X.~Han, Z.~Zhang, N.~Ding, Y.~Gu, X.~Liu, Y.~Huo, J.~Qiu, Y.~Yao, A.~Zhang,
+  L.~Zhang \emph{et~al.}, ``Pre-trained models: Past, present and future,''
+  \emph{AI open}, vol.~2, pp. 225--250, 2021.
 
-\bibitem{wu2025m}
-C.~Wu, B.~Ma, Y.~Liu, Z.~Zhang, N.~Deng, Y.~Li, B.~Chen, Y.~Zhang, Y.~Xue, and
-  B.~Plank, ``M-absa: A multilingual dataset for aspect-based sentiment
-  analysis,'' in \emph{Proceedings of the 2025 Conference on Empirical Methods
-  in Natural Language Processing}, 2025, pp. 2530--2557.
-
-\bibitem{lamin2025cross}
-N.~Z. Lamin and A.~A. Aziz, ``Cross-lingual sentiment analysis in low-resource
-  languages: A recent review on tasks, methods and challenges.''
-  \emph{International Journal of Advanced Computer Science \& Applications},
-  vol.~16, no.~11, 2025.
+\bibitem{min2023recent}
+B.~Min, H.~Ross, E.~Sulem, A.~P.~B. Veyseh, T.~H. Nguyen, O.~Sainz, E.~Agirre,
+  I.~Heintz, and D.~Roth, ``Recent advances in natural language processing via
+  large pre-trained language models: A survey,'' \emph{ACM Computing Surveys},
+  vol.~56, no.~2, pp. 1--40, 2023.
 
 \bibitem{ruder2021xtreme}
 S.~Ruder, N.~Constant, J.~Botha, A.~Siddhant, O.~Firat, J.~Fu, P.~Liu, J.~Hu,
@@ -103,23 +101,6 @@ S.~Ruder, N.~Constant, J.~Botha, A.~Siddhant, O.~Firat, J.~Fu, P.~Liu, J.~Hu,
   and nuanced multilingual evaluation,'' in \emph{Proceedings of the 2021
   Conference on Empirical Methods in Natural Language Processing}, 2021, pp.
   10\,215--10\,245.
-
-\bibitem{han2021pre}
-X.~Han, Z.~Zhang, N.~Ding, Y.~Gu, X.~Liu, Y.~Huo, J.~Qiu, Y.~Yao, A.~Zhang,
-  L.~Zhang \emph{et~al.}, ``Pre-trained models: Past, present and future,''
-  \emph{AI open}, vol.~2, pp. 225--250, 2021.
-
-\bibitem{zhang2024cross}
-J.~Zhang, X.~Qiu, T.~Shen, W.~Wang, K.~Zhang, and W.~Feng, ``Cross-lingual word
-  alignment for asean languages with contrastive learning,'' in \emph{2024
-  International Conference on Asian Language Processing (IALP)}.\hskip 1em plus
-  0.5em minus 0.4em\relax IEEE, 2024, pp. 61--66.
-
-\bibitem{min2023recent}
-B.~Min, H.~Ross, E.~Sulem, A.~P.~B. Veyseh, T.~H. Nguyen, O.~Sainz, E.~Agirre,
-  I.~Heintz, and D.~Roth, ``Recent advances in natural language processing via
-  large pre-trained language models: A survey,'' \emph{ACM Computing Surveys},
-  vol.~56, no.~2, pp. 1--40, 2023.
 
 \bibitem{hu2022lora}
 E.~J. Hu, Y.~Shen, P.~Wallis, Z.~Allen-Zhu, Y.~Li, S.~Wang, L.~Wang, and
@@ -140,5 +121,11 @@ S.~Nwaiwu, ``Parameter-efficient fine-tuning for low-resource text
 J.~Opitz, ``A closer look at classification evaluation metrics and a critical
   reflection of common evaluation practice,'' \emph{Transactions of the
   Association for Computational Linguistics}, vol.~12, pp. 820--836, 2024.
+
+\bibitem{lamin2025cross}
+N.~Z. Lamin and A.~A. Aziz, ``Cross-lingual sentiment analysis in low-resource
+  languages: A recent review on tasks, methods and challenges.''
+  \emph{International Journal of Advanced Computer Science \& Applications},
+  vol.~16, no.~11, 2025.
 
 \end{thebibliography}

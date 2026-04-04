@@ -4,4 +4,5 @@ logistic-regression,Logistic Regression,1,2,2000.144,12.67,1,Tesla T4,14.56
 mbert,mBERT,1,2,2000.244,12.67,1,Tesla T4,14.56
 mbert-lao,mBERT-Lao,1,2,2000.15,12.67,1,Tesla T4,14.56
 svm,SVM,1,2,2000.144,12.67,1,Tesla T4,14.56
+textcnn,TextCNN,1,2,2000.182,12.67,1,Tesla T4,14.56
 xlm-roberta,XLM-RoBERTa,1,2,2000.146,12.67,1,Tesla T4,14.56

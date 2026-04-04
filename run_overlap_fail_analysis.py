@@ -9,7 +9,7 @@ from matplotlib import font_manager as fm
 from wordcloud import WordCloud
 
 
-FIXED_MODES = {"baseline", "full-finetuning", "lora"}
+FIXED_MODES = {"baseline", "from-scratch", "full-finetuning", "lora"}
 TOKEN_PATTERN = re.compile(r"[0-9A-Za-z\u0E80-\u0EFF]+", re.UNICODE)
 PROJECT_FONT_CANDIDATES = [
     Path(r"C:\Users\LENOVO\Downloads\res\fonts\saysettha_ot.ttf"),
