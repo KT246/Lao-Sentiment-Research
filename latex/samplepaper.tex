@@ -102,9 +102,9 @@ Lao Sentiment Classification, Pre-trained Language Models, TextCNN, LoRA, Low-re
 \section{Introduction}
 \label{sec:introduction}
 
-Sentiment analysis plays an important role in e-commerce and digital-service platforms because user reviews and ratings provide direct evidence of customer satisfaction, service quality, and product perception \cite{tan2023survey,alahmadi2025generalizing}. For Lao-language platforms, automatic sentiment classification could support faster and more scalable analysis of user feedback from app stores, social media, and related digital channels.
+Sentiment analysis plays an important role in e-commerce and digital-service platforms because user reviews and ratings provide direct evidence of customer satisfaction, service quality, and product perception \cite{tan2023survey,alahmadi2025generalizing,10.1007/978-3-032-21625-0_12}. For Lao-language platforms, automatic sentiment classification could support faster and more scalable analysis of user feedback from app stores, social media, and related digital channels.
 
-The main gap is that Lao sentiment analysis remains under-resourced in both data and tooling. Publicly available annotated corpora, standardized benchmarks, and mature NLP tools for Lao are still limited \cite{lin2022laoplm,nguyen2025semi}. The challenge is compounded by the continuous-script nature of Lao, in which word boundaries are not explicitly marked \cite{nguyen2025semi}, and by the character of real review data, which is often short, noisy, informal, and domain-specific \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview}. As a result, methods that work well for high-resource languages do not transfer cleanly to Lao review classification.
+The main gap is that Lao sentiment analysis remains under-resourced in both data and tooling. Publicly available annotated corpora, standardized benchmarks, and mature NLP tools for Lao are still limited \cite{lin2022laoplm,nguyen2025semi,saengsuwan2023laonlp}. The challenge is compounded by the continuous-script nature of Lao, in which word boundaries are not explicitly marked \cite{nguyen2025semi}, and by the character of real review data, which is often short, noisy, informal, and domain-specific \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview}. As a result, methods that work well for high-resource languages do not transfer cleanly to Lao review classification.
 
 This limitation affects both traditional and pretrained approaches. Survey work on sentiment analysis notes that rule-based systems demand substantial manual effort, while classical machine learning models remain sensitive to feature design and labeled data availability \cite{tan2023survey,alahmadi2025generalizing}. Generic multilingual PLMs are not guaranteed to perform well either, because their pretraining may underrepresent Lao and may not align closely with Lao tokenization behavior or review-specific language \cite{lin2022laoplm}. This motivates a direct comparison between strong multilingual PLMs, a Lao-supporting PLM, a lightweight neural baseline, and sparse baselines on the same Lao app-review dataset. Our working hypothesis is that stronger multilingual transfer and Lao-oriented pretraining will outperform lightweight and sparse baselines, while parameter-efficient tuning will preserve most of the gains at a lower training cost.
 
@@ -133,7 +133,7 @@ The evolution of Lao sentiment analysis has followed the broader trajectory of p
 
 Early progress was marked by the introduction of multilingual BERT (mBERT) in 2019 \cite{devlin2019bert}, which provided the first massive transformer pre-training for over 100 languages, including zero-shot capabilities for low-resource scripts. However, a major limitation of mBERT remains its sub-optimal representation of Lao due to a shared vocabulary that assigns limited capacity to low-resource languages, often resulting in fragmented subword tokens for continuous scripts. This was partially addressed by XLM-RoBERTa (XLM-R) in 2020 \cite{conneau2020unsupervised}, which scaled up training data and refined cross-lingual representations. While XLM-R demonstrates significantly stronger zero-shot and few-shot performance, its primary limitation in the Lao context remains its generic pre-training objective, which does not explicitly account for the specific character boundaries or the noisy, informal code-mixing prevalent in modern digital communication.
 
-A closely related regional example is Vietnamese e-commerce sentiment classification, where recent work reports strong results from fine-tuning PhoBERT, viBERT, and XLM-RoBERTa variants while also highlighting informal language, code-mixing, and domain-adaptation challenges that are relevant to our setting \cite{pham2026vietnamese_ecommerce}.
+A closely related regional example is Vietnamese e-commerce sentiment classification, where recent work reports strong results from fine-tuning PhoBERT, viBERT, and XLM-RoBERTa variants while also highlighting informal language, code-mixing, and domain-adaptation challenges that are relevant to our setting \cite{10.1007/978-3-032-21625-0_12}.
 
 Low-resource language processing is still constrained by the lack of large corpora, annotated benchmarks, and mature preprocessing tools. For Lao, this limitation has been noted in work on word segmentation, text classification, and broader resource construction \cite{lin2022laoplm,nguyen2025semi}. Because Lao is written as a continuous script, preprocessing itself can become a source of error: tokenization and boundary detection are less straightforward than in whitespace-delimited languages \cite{nguyen2025semi}. This challenge is directly relevant to the current dataset, where many user reviews are very short and noisy.
 
@@ -160,9 +160,77 @@ Each record contains two fields, namely the review text and a binary sentiment l
 \subsection{Annotation Scheme}
 \label{subsec:annotation_scheme}
 
-The raw reviews were manually annotated with binary sentiment labels. Each review was assigned a single label based on its overall polarity: label 1 for positive sentiment and label 0 for negative sentiment. The annotation process focused on the dominant sentiment expressed in each review, including explicit praise, complaints, dissatisfaction, or statements about overall user experience.
+The raw reviews were manually annotated with binary sentiment labels. Each review was assigned a single label based on its overall polarity: label 1 for positive sentiment and label 0 for negative sentiment. The annotation process focused on the dominant sentiment expressed in each review, including explicit praise, complaints, dissatisfaction, or statements about overall user experience. 
 
 To improve label consistency, the annotation followed a simple set of practical guidelines. Reviews expressing clearly favorable opinions toward an application, service quality, or user experience were marked as positive, whereas reviews expressing frustration, malfunction, dissatisfaction, or criticism were marked as negative. During dataset refinement, noisy, invalid, or suspicious samples were revisited through the cleaning pipeline described below so that only reliable sentiment instances were retained in the final corpus.
+
+\subsection{Graphetics and Tonogenesis in Lao}
+\label{subsec:graphetics_tonogenesis}
+
+Lao is a tonal language whose orthography is significantly more complex than whitespace-delimited scripts. The script is an abugida where vowels and tone markers are positioned around consonants in a non-linear fashion. This orthographic structure, or graphetics, poses significant challenges for sentiment analysis because the physical representation of the language does not rely on whitespace to delimit word boundaries \cite{enfield2007grammar,lew2014linguistic}. Central to Lao graphetics is the classification of consonants into three distinct groups—High, Mid, and Low—which dictate the fundamental tonal behavior of syllables. Table~\ref{tab:consonant_classes} summarizes these classes and their representative characters.
+
+\begin{table}[H]
+\centering
+\caption{Consonant classes in the Lao script (Graphetics).}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.85\textwidth}{|l|X|}
+\hline
+\textbf{Class} & \textbf{Representative Consonants} \\
+\hline
+High & {\tablelaofont ຂ, ສ, ຖ, ຜ, ຝ, ຫ} \\
+\hline
+Middle & {\tablelaofont ກ, ຈ, ດ, ຕ, ບ, ປ, ຢ, ອ} \\
+\hline
+Low & {\tablelaofont ຄ, ງ, ຊ, ຍ, ທ, ນ, ພ, ຟ, ມ, ລ, ວ, ຮ} \\
+\hline
+\end{tabularx}
+\label{tab:consonant_classes}
+\end{table}
+
+A second crucial graphetic feature is the non-linear placement of vowels. Unlike Latin scripts, Lao vowels can be preposed, postposed, superposed, or subposed relative to the initial consonant. This complexity, illustrated in Table~\ref{tab:vowel_placement}, often leads to encoding noise in informal text where users may input characters in visual rather than logical order.
+
+\begin{table}[H]
+\centering
+\caption{Vowel placement in the Lao script (Graphetics).}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{0.85\textwidth}{|l|X|l|}
+\hline
+\textbf{Position} & \textbf{Examples} & \textbf{Type} \\
+\hline
+Preposed & {\tablelaofont ເ, ແ, ໂ, ໃ, ໄ} & Before consonant \\
+\hline
+Postposed & {\tablelaofont ະ, າ, ຳ} & After consonant \\
+\hline
+Superposed & {\tablelaofont ິ, ີ, ຶ, ື, ໍ} & Above consonant \\
+\hline
+Subposed & {\tablelaofont ຸ, ູ} & Below consonant \\
+\hline
+\end{tabularx}
+\label{tab:vowel_placement}
+\end{table}
+
+Furthermore, the historical development of the Lao tone system, or tonogenesis, has resulted in a framework where the surface tone is determined by the interaction between the consonant class, syllable type (live vs. dead), and tone markers \cite{pittayaporn2009phonology}. In real-world user reviews, these linguistic features are often simplified or omitted, leading to semantic ambiguity. Table~\ref{tab:tone_rules} presents the complete tone determination rules for the Vientiane (standard) dialect, illustrating the complexity that NLP models must navigate in low-resource Lao sentiment classification.
+
+\begin{table}[H]
+\centering
+\caption{Complete tone determination rules reflecting Lao tonogenesis results.}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|l|X|X|X|X|X|}
+\hline
+\textbf{Class} & \textbf{Live (No Mark)} & \textbf{Mai Ek ({\tablelaofont ◌່})} & \textbf{Mai Tho ({\tablelaofont ◌້})} & \textbf{Dead (Short)} & \textbf{Dead (Long)} \\
+\hline
+High & Rising & Low Falling & High & High & Low Falling \\
+\hline
+Middle & Low Rising & Mid & High Falling & High & Low Falling \\
+\hline
+Low & Mid & High Rising & High Falling & Mid & High Falling \\
+\hline
+\end{tabularx}
+\label{tab:tone_rules}
+\end{table}
 
 \subsection{Data Preprocessing and Cleaning Pipeline}
 \label{subsec:data_preprocessing}
@@ -171,26 +239,26 @@ Before final training, the raw reviews were cleaned and filtered in several stag
 
 To assess label quality more efficiently, we trained a lightweight screening model and compared its predictions with the manual annotations. Samples that repeatedly agreed with their labels were retained, whereas mismatched cases were rechecked and many were removed. This step served as a practical filter for suspicious or low-quality reviews before the final benchmark experiments.
 
-We also used a separate 5-fold cross-validation auditing step for difficult cases during dataset cleaning. This step was part of data filtering only and is distinct from the 3-fold cross-validation used later for model evaluation. Reviews that were repeatedly misclassified across folds were treated as unstable, and many of them contained invalid Lao character patterns or meaningless text fragments.
+We also used a separate 5-fold cross-validation auditing step for difficult cases during dataset cleaning. This step was part of data filtering only and is distinct from the 3-fold cross-validation used later for model evaluation. Reviews that were repeatedly misclassified across folds were treated as unstable, and many of them contained invalid Lao character patterns or meaningless text fragments. Table~\ref{tab:cleaning_errors} provides specific examples of the common script errors, lexical inconsistencies, and semantic noise identified through this systematic cleaning process, comparing noisy processed samples with their standard Lao corrections.
 
 \begin{table}[H]
 \centering
-\caption{Comparison of preprocessing results between Processed Data and Original Data, illustrating common Lao script errors identified during cleaning. Red text marks the incorrect span in Processed Data, while blue text marks the corrected span in Original Data.}
+\caption{Comparison of preprocessing results between Processed Data and Standard Lao, illustrating common Lao script errors identified during cleaning.}
 \small
 \renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{|p{0.24\textwidth}|X|X|X|}
 \hline
-\textbf{Error Description} & \textbf{Processed Data (version 1)} & \textbf{Original Data} & \textbf{English Content} \\
+\textbf{Error Description} & \textbf{Processed Data (version 1)} & \textbf{Standard Lao} & \textbf{English Content} \\
 \hline
-Vowel error \& missing a letter:\newline \textcolor{teal!70!black}{\textbf{(1)}} {\tablelaofont ຢຸ} $\rightarrow$ {\tablelaofont ຢູ່}: missing long-vowel sign + tone mark & {\tablelaofont ກະດີ\textcolor{red!75!black}{ຢຸ}} \textcolor{teal!70!black}{\textbf{(1)}} & {\tablelaofont ກະດີ\textcolor{blue!70!black}{ຢູ່}} & it is good \\
+Vowel error \& missing a letter:\newline \textcolor{teal!70!black}{\textbf{(1)}} \textcolor{red!75!black}{{\tablelaofont ຢຸ}} $\rightarrow$ \textcolor{blue!70!black}{{\tablelaofont ຢູ່}}: missing long-vowel sign + tone mark & {\tablelaofont ກະດີ\textcolor{red!75!black}{ຢຸ}} \textcolor{teal!70!black}{\textbf{(1)}} & {\tablelaofont ກະດີ\textcolor{blue!70!black}{ຢູ່}} & it is good \\
 \hline
-Incorrect label \& character error:\newline \textcolor{teal!70!black}{\textbf{(2)}} {\tablelaofont ບໍ} $\rightarrow$ {\tablelaofont ບໍ່}: missing tone mark; label mismatch & {\tablelaofont \textcolor{red!75!black}{ບໍ}ມີຫຍັງ} \textcolor{teal!70!black}{\textbf{(2)}} & {\tablelaofont \textcolor{blue!70!black}{ບໍ່}ມີຫຍັງ} & no problem \\
+Incorrect label \& character error:\newline \textcolor{teal!70!black}{\textbf{(2)}} \textcolor{red!75!black}{{\tablelaofont ບໍ}} $\rightarrow$ \textcolor{blue!70!black}{{\tablelaofont ບໍ່}}: missing tone mark; label mismatch & {\tablelaofont \textcolor{red!75!black}{ບໍ}ມີຫຍັງ} \textcolor{teal!70!black}{\textbf{(2)}} & {\tablelaofont \textcolor{blue!70!black}{ບໍ່}ມີຫຍັງ} & no problem \\
 \cline{2-4}
-\textcolor{teal!70!black}{\textbf{(3)}} {\tablelaofont ໃສ່} $\rightarrow$ {\tablelaofont ໃຊ້}: wrong middle word; label mismatch & {\tablelaofont ພໍ\textcolor{red!75!black}{ໃສ່}ໄດ້} \textcolor{teal!70!black}{\textbf{(3)}} & {\tablelaofont ພໍ\textcolor{blue!70!black}{ໃຊ້}ໄດ້} & enough to use \\
+\textcolor{teal!70!black}{\textbf{(3)}} \textcolor{red!75!black}{{\tablelaofont ໃສ່}} $\rightarrow$ \textcolor{blue!70!black}{{\tablelaofont ໃຊ້}}: wrong middle word; label mismatch & {\tablelaofont ພໍ\textcolor{red!75!black}{ໃສ່}ໄດ້} \textcolor{teal!70!black}{\textbf{(3)}} & {\tablelaofont ພໍ\textcolor{blue!70!black}{ໃຊ້}ໄດ້} & enough to use \\
 \cline{2-4}
-\textcolor{teal!70!black}{\textbf{(4)}} {\tablelaofont ໃດ້} $\rightarrow$ {\tablelaofont ໄດ້}: wrong leading vowel sign; label mismatch & {\tablelaofont ຕິດຕັ້ງບໍ່\textcolor{red!75!black}{ໃດ້}} \textcolor{teal!70!black}{\textbf{(4)}} & {\tablelaofont ຕິດຕັ້ງບໍ່\textcolor{blue!70!black}{ໄດ້}} & cannot install \\
+\textcolor{teal!70!black}{\textbf{(4)}} \textcolor{red!75!black}{{\tablelaofont ໃດ້}} $\rightarrow$ \textcolor{blue!70!black}{{\tablelaofont ໄດ້}}: wrong leading vowel sign; label mismatch & {\tablelaofont ຕິດຕັ້ງບໍ່\textcolor{red!75!black}{ໃດ້}} \textcolor{teal!70!black}{\textbf{(4)}} & {\tablelaofont ຕິດຕັ້ງບໍ່\textcolor{blue!70!black}{ໄດ້}} & cannot install \\
 \cline{2-4}
-\textcolor{teal!70!black}{\textbf{(5)}} {\tablelaofont ໄຈ} $\rightarrow$ {\tablelaofont ໃຈ}: wrong leading vowel sign; label mismatch & {\tablelaofont ຂອບ\textcolor{red!75!black}{ໄຈ}} \textcolor{teal!70!black}{\textbf{(5)}} & {\tablelaofont ຂອບ\textcolor{blue!70!black}{ໃຈ}} & thank you \\
+\textcolor{teal!70!black}{\textbf{(5)}} \textcolor{red!75!black}{{\tablelaofont ໄຈ}} $\rightarrow$ \textcolor{blue!70!black}{{\tablelaofont ໃຈ}}: wrong leading vowel sign; label mismatch & {\tablelaofont ຂອບ\textcolor{red!75!black}{ໄຈ}} \textcolor{teal!70!black}{\textbf{(5)}} & {\tablelaofont ຂອບ\textcolor{blue!70!black}{ໃຈ}} & thank you \\
 \hline
 Has no semantic meaning:\newline \textcolor{teal!70!black}{\textbf{(6)}} no valid Lao word sequence & {\tablelaofont \textcolor{red!75!black}{ພາສາພໍ່າໄພຍາຍຈາຍ່}} \textcolor{teal!70!black}{\textbf{(6)}} & & \\
 \cline{2-3}
@@ -201,6 +269,8 @@ Has no semantic meaning:\newline \textcolor{teal!70!black}{\textbf{(6)}} no vali
 \textcolor{teal!70!black}{\textbf{(9)}} non-word string & {\tablelaofont \textcolor{red!75!black}{ທາດດແພພະນ້ຳສສ}} \textcolor{teal!70!black}{\textbf{(9)}} & & \\
 \hline
 \end{tabularx}
+\par\smallskip\footnotesize
+\textbf{Note:} Red text marks the incorrect span in Processed Data, while blue text marks the corrected span in Standard Lao. Teal markers (e.g., \textcolor{teal!70!black}{\textbf{(1)}}) link error descriptions to specific occurrences in the text.
 \label{tab:cleaning_errors}
 \end{table}
 
@@ -326,7 +396,7 @@ where $\hat{D}^{(k)}_{\text{val}}$ denotes the predictions produced by the best 
 
 \begin{figure}[H]
 \centering
-\includesvg[width=\textwidth]{figures/Lao_Finetuning_Framework_Sentiment_Analysis}
+\includegraphics[width=\textwidth]{figures/Lao_Finetuning_Framework_Sentiment_Analysis.png}
 \caption{Overall methodology framework for Lao sentiment classification, including dataset preparation, model selection, and training strategies.}
 \label{fig:methodology_framework}
 \end{figure}

@@ -31,6 +31,14 @@ K.~Alahmadi, S.~Alharbi, J.~Chen, and X.~Wang, ``Generalizing sentiment
   analysis: a review of progress, challenges, and emerging directions,''
   \emph{Social Network Analysis and Mining}, vol.~15, no.~1, p.~45, 2025.
 
+\bibitem{10.1007/978-3-032-21625-0_12}
+Q.-V. Pham, N.-H. Dang, P.-L. Tran, and Q.-H. Le, ``Fine-tuning pre-trained
+  language models for vietnamese sentiment classification in e-commerce,'' in
+  \emph{Computational Intelligence in Engineering Science}, N.~T. Nguyen, A.-C.
+  Le, T.~D. Tran, T.-P. Hong, Y.~Manolopoulos, N.~A. Le~Khac, P.~Tran~Tin, and
+  V.-N. Huynh, Eds.\hskip 1em plus 0.5em minus 0.4em\relax Cham: Springer
+  Nature Switzerland, 2026, pp. 160--174.
+
 \bibitem{lin2022laoplm}
 N.~Lin, Y.~Fu, C.~Chen, Z.~Yang, and S.~Jiang, ``Laoplm: Pre-trained language
   models for lao,'' in \emph{Proceedings of the Thirteenth Language Resources
@@ -40,6 +48,10 @@ N.~Lin, Y.~Fu, C.~Chen, Z.~Yang, and S.~Jiang, ``Laoplm: Pre-trained language
 H.~T. Nguyen, T.~Palongve, C.~Q. Nguyen, and K.~T. Le, ``Semi-automatic
   construction and benchmarking of a word-segmented corpus for lao using llms
   and transformer models,'' \emph{Informatica}, vol.~49, no.~27, 2025.
+
+\bibitem{saengsuwan2023laonlp}
+W.~Saengsuwan, ``Laonlp: A toolkit for lao natural language processing,''
+  \emph{GitHub Repository}, 2023.
 
 \bibitem{subramanian2025kec_tech_titans}
 M.~Subramanian, K.~Shanmugavadivel \emph{et~al.}, ``Kec\_tech\_titans@
@@ -76,14 +88,6 @@ A.~Conneau, K.~Khandelwal, N.~Goyal, V.~Chaudhary, G.~Wenzek, F.~Guzm{\'a}n,
   58th Annual Meeting of the Association for Computational Linguistics}, 2020,
   pp. 8440--8451.
 
-\bibitem{pham2026vietnamese_ecommerce}
-Q.-V. Pham, N.-H. Dang, P.-L. Tran, and Q.-H. Le, ``Fine-tuning pre-trained
-  language models for vietnamese sentiment classification in e-commerce,'' in
-  \emph{Computational Intelligence in Engineering Science}, N.~T. Nguyen, A.-C.
-  Le, T.~D. Tran, T.-P. Hong, Y.~Manolopoulos, N.~A. Le~Khac, P.~Tran~Tin, and
-  V.-N. Huynh, Eds.\hskip 1em plus 0.5em minus 0.4em\relax Cham: Springer
-  Nature Switzerland, 2026, pp. 160--174.
-
 \bibitem{han2021pre}
 X.~Han, Z.~Zhang, N.~Ding, Y.~Gu, X.~Liu, Y.~Huo, J.~Qiu, Y.~Yao, A.~Zhang,
   L.~Zhang \emph{et~al.}, ``Pre-trained models: Past, present and future,''
@@ -101,6 +105,19 @@ S.~Ruder, N.~Constant, J.~Botha, A.~Siddhant, O.~Firat, J.~Fu, P.~Liu, J.~Hu,
   and nuanced multilingual evaluation,'' in \emph{Proceedings of the 2021
   Conference on Empirical Methods in Natural Language Processing}, 2021, pp.
   10\,215--10\,245.
+
+\bibitem{enfield2007grammar}
+N.~J. Enfield, \emph{A grammar of Lao}, ser. Mouton grammar library.\hskip 1em
+  plus 0.5em minus 0.4em\relax Berlin: Mouton de Gruyter, 2007, vol.~38.
+
+\bibitem{lew2014linguistic}
+S.~Lew, ``A linguistic analysis of the lao writing system and its suitability
+  for minority language orthographies,'' \emph{Writing Systems Research},
+  vol.~6, no.~1, pp. 25--40, 2014.
+
+\bibitem{pittayaporn2009phonology}
+P.~Pittayaporn, ``The phonology of proto-tai,'' Doctoral dissertation, Cornell
+  University, 2009.
 
 \bibitem{hu2022lora}
 E.~J. Hu, Y.~Shen, P.~Wallis, Z.~Allen-Zhu, Y.~Li, S.~Wang, L.~Wang, and
