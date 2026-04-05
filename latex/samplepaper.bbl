@@ -49,9 +49,11 @@ H.~T. Nguyen, T.~Palongve, C.~Q. Nguyen, and K.~T. Le, ``Semi-automatic
   construction and benchmarking of a word-segmented corpus for lao using llms
   and transformer models,'' \emph{Informatica}, vol.~49, no.~27, 2025.
 
-\bibitem{saengsuwan2023laonlp}
-W.~Saengsuwan, ``Laonlp: A toolkit for lao natural language processing,''
-  \emph{GitHub Repository}, 2023.
+\bibitem{phatthiyaphaibun_2022_6833407}
+\BIBentryALTinterwordspacing
+W.~Phatthiyaphaibun, ``Laonlp: Lao language natural language processing,'' Jul.
+  2022. [Online]. Available: \url{https://doi.org/10.5281/zenodo.6833407}
+\BIBentrySTDinterwordspacing
 
 \bibitem{subramanian2025kec_tech_titans}
 M.~Subramanian, K.~Shanmugavadivel \emph{et~al.}, ``Kec\_tech\_titans@
@@ -74,19 +76,24 @@ T.~Durairaj, B.~R. Chakravarthi, A.~Hegde, H.~L. Shashirekha, R.~Natarajan,
   and tulu,'' in \emph{Proceedings of the Fifth Workshop on Speech, Vision, and
   Language Technologies for Dravidian Languages}, 2025, pp. 732--738.
 
-\bibitem{devlin2019bert}
-J.~Devlin, M.-W. Chang, K.~Lee, and K.~Toutanova, ``Bert: Pre-training of deep
-  bidirectional transformers for language understanding,'' in \emph{Proceedings
-  of the 2019 Conference of the North American Chapter of the Association for
-  Computational Linguistics: Human Language Technologies, Volume 1 (Long and
-  Short Papers)}, 2019, pp. 4171--4186.
-
 \bibitem{conneau2020unsupervised}
 A.~Conneau, K.~Khandelwal, N.~Goyal, V.~Chaudhary, G.~Wenzek, F.~Guzm{\'a}n,
   E.~Grave, M.~Ott, L.~Zettlemoyer, and V.~Stoyanov, ``Unsupervised
   cross-lingual representation learning at scale,'' in \emph{Proceedings of the
   58th Annual Meeting of the Association for Computational Linguistics}, 2020,
   pp. 8440--8451.
+
+\bibitem{devlin2019bert}
+J.~Devlin, M.-W. Chang, K.~Lee, and K.~Toutanova, ``Bert: Pre-training of deep
+  bidirectional transformers for language understanding,'' in \emph{Proceedings
+  of the 2019 conference of the North American chapter of the association for
+  computational linguistics: human language technologies, volume 1 (long and
+  short papers)}, 2019, pp. 4171--4186.
+
+\bibitem{hu2022lora}
+E.~J. Hu, Y.~Shen, P.~Wallis, Z.~Allen-Zhu, Y.~Li, S.~Wang, L.~Wang, and
+  W.~Chen, ``Lora: Low-rank adaptation of large language models,'' in
+  \emph{International Conference on Learning Representations}, 2022.
 
 \bibitem{han2021pre}
 X.~Han, Z.~Zhang, N.~Ding, Y.~Gu, X.~Liu, Y.~Huo, J.~Qiu, Y.~Yao, A.~Zhang,
@@ -106,23 +113,28 @@ S.~Ruder, N.~Constant, J.~Botha, A.~Siddhant, O.~Firat, J.~Fu, P.~Liu, J.~Hu,
   Conference on Empirical Methods in Natural Language Processing}, 2021, pp.
   10\,215--10\,245.
 
-\bibitem{enfield2007grammar}
-N.~J. Enfield, \emph{A grammar of Lao}, ser. Mouton grammar library.\hskip 1em
-  plus 0.5em minus 0.4em\relax Berlin: Mouton de Gruyter, 2007, vol.~38.
+\bibitem{enfield2008grammar}
+N.~J. Enfield, \emph{A grammar of Lao}.\hskip 1em plus 0.5em minus 0.4em\relax
+  Walter de Gruyter, 2008, vol.~38.
 
 \bibitem{lew2014linguistic}
 S.~Lew, ``A linguistic analysis of the lao writing system and its suitability
-  for minority language orthographies,'' \emph{Writing Systems Research},
+  for minority language orthographies,'' \emph{Writing systems research},
   vol.~6, no.~1, pp. 25--40, 2014.
 
 \bibitem{pittayaporn2009phonology}
-P.~Pittayaporn, ``The phonology of proto-tai,'' Doctoral dissertation, Cornell
-  University, 2009.
+P.~Pittayaporn, ``The phonology of proto-tai,'' 2009.
 
-\bibitem{hu2022lora}
-E.~J. Hu, Y.~Shen, P.~Wallis, Z.~Allen-Zhu, Y.~Li, S.~Wang, L.~Wang, and
-  W.~Chen, ``Lora: Low-rank adaptation of large language models,'' in
-  \emph{International Conference on Learning Representations}, 2022.
+\bibitem{pedregosa2011scikit}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg \emph{et~al.},
+  ``Scikit-learn: Machine learning in python,'' \emph{the Journal of machine
+  Learning research}, vol.~12, pp. 2825--2830, 2011.
+
+\bibitem{kim2014convolutional}
+Y.~Kim, ``Convolutional neural networks for sentence classification,'' in
+  \emph{Proceedings of the 2014 conference on empirical methods in natural
+  language processing (EMNLP)}, 2014, pp. 1746--1751.
 
 \bibitem{mao2025survey}
 Y.~Mao, Y.~Ge, Y.~Fan, W.~Xu, Y.~Mi, Z.~Hu, and Y.~Gao, ``A survey on lora of
