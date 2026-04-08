@@ -96,7 +96,7 @@ Khamtay Kongmanh\textsuperscript{1}, Quang-Vinh Pham\textsuperscript{2}, Quang-H
 \maketitle
 
 \begin{abstract}
-Effective sentiment analysis for the Lao language is hindered by a scarcity of annotated resources and the inherent noise of real-world user feedback, which often features code-mixing and informal script patterns. This study addresses these challenges by introducing a high-quality, filtered benchmark of 25,139 Lao-language reviews collected from popular digital applications. We evaluate classical baselines, a lightweight textual convolutional neural network model trained from scratch, and several state-of-the-art pre-trained language models, including XLM-RoBERTa, multilingual BERT, and a Lao-specific multilingual BERT, across full fine-tuning, low-rank adaptation, and k-fold cross-validation settings as applicable. Our experimental results demonstrate that XLM-RoBERTa achieves superior performance with 96.64\% accuracy and an $F_1$-macro score of 0.9617. The textual convolutional neural network also provides a strong neural baseline with 94.03\% $F_1$-macro on the fixed split, placing it between the sparse baselines and the strongest pre-trained language model variants. We also find that while Lao-oriented pre-training provides significant benefits, low-rank adaptation offers a highly efficient performance-cost trade-off, maintaining competitive accuracy with minimal trainable parameters. Our research highlights the robustness of multilingual transfer for low-resource sentiment classification and provides a publicly available dataset and code at \url{https://github.com/KT246/LaosSA}.
+Effective sentiment analysis for the Lao language is hindered by a scarcity of annotated resources and the inherent noise of real-world user feedback, which often features code-mixing and informal script patterns. This study addresses these challenges by introducing a high-quality, filtered benchmark of 25,139 Lao-language reviews collected from popular digital applications. We evaluate classical baselines, a lightweight textual convolutional neural network model trained from scratch, and several state-of-the-art pre-trained language models, including XLM-RoBERTa, multilingual BERT, and a Lao-specific multilingual BERT, across full fine-tuning, low-rank adaptation, and K-fold cross-validation settings as applicable. Our experimental results demonstrate that XLM-RoBERTa achieves superior performance with 96.64\% accuracy and an $F_1$-macro score of 0.9617. The textual convolutional neural network also provides a strong neural baseline with 94.03\% $F_1$-macro on the fixed split, placing it between the sparse baselines and the strongest pre-trained language model variants. We also find that while Lao-oriented pre-training provides significant benefits, low-rank adaptation offers a highly efficient performance-cost trade-off, maintaining competitive accuracy with minimal trainable parameters. Our research highlights the robustness of multilingual transfer for low-resource sentiment classification and provides a publicly available dataset and code at \url{https://github.com/KT246/LaosSA}.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -261,6 +261,13 @@ In addition to the PLMs, the benchmark includes four non-PLM references: Logisti
 \subsection{Fine-Tuning and From-Scratch Training Strategies}
 \label{subsec:fine_tuning_strategies}
 
+\begin{figure}[!b]
+\centering
+\includegraphics[width=\textwidth]{figures/Lao_Finetuning_Framework_Sentiment_Analysis.png}
+\caption{Overall methodology framework for Lao sentiment classification, including dataset preparation, model selection, and training strategies.}
+\label{fig:methodology_framework}
+\end{figure}
+
 Each PLM is trained with either Full Fine-tuning or LoRA, while the neural baseline is trained from-scratch. Full Fine-tuning updates the backbone and classification head end to end. LoRA instead freezes the pretrained weights and learns low-rank updates in selected attention projections \cite{hu2022lora,mao2025survey,nwaiwu2025parameter}. From-scratch training involves random weight initialization and localized optimization without knowledge transfer. We also report 3-fold cross-validation as a robustness check; in that setting, a separate model is trained on each fold and the final score is computed from the concatenated out-of-fold predictions.
 
 Let $\theta$ denote the backbone parameters and $\phi$ the classification head. Full Fine-tuning solves
@@ -280,12 +287,6 @@ For cross-validation, out-of-fold predictions from all $K$ folds are concatenate
 \end{equation}
 where $\hat{D}^{(k)}_{\text{val}}$ denotes the predictions produced by the best checkpoint of fold $k$ on its held-out partition.
 
-\begin{figure}[!b]
-\centering
-\includegraphics[width=\textwidth]{figures/Lao_Finetuning_Framework_Sentiment_Analysis.png}
-\caption{Overall methodology framework for Lao sentiment classification, including dataset preparation, model selection, and training strategies.}
-\label{fig:methodology_framework}
-\end{figure}
 
 Fig.\ref{fig:methodology_framework} summarizes the benchmark in three stages. The workflow begins with Google Play review collection, binary annotation, normalization, cleaning, and the post-processing audit used to construct the final split. It then trains XLM-RoBERTa, mBERT, mBERT-Lao, TextCNN, and TF-IDF baselines under the strategy variants applicable to each family, including Full Fine-tuning, LoRA, from-scratch training, and 3-fold cross-validation. Finally, the pipeline exports checkpoints, validation predictions, standard metrics, timing summaries, and false-positive/false-negative artifacts for the later analysis sections.
 
@@ -411,8 +412,6 @@ Baseline features & TF-IDF char $n$-grams (3-5), max 50,000 \\
 We now summarize the main performance pattern before turning to error behavior and efficiency trade-offs.
 
 \subsubsection{Overall Performance and Domain Adaptation}
-Table~\ref{tab:overall_results} and Fig.~\ref{fig:metric_overview} show that backbone suitability matters more than simply moving from sparse to neural baselines, or from LoRA to Full Fine-tuning within the same PLM family. XLM-RoBERTa remains the strongest model family, mBERT-Lao clearly outperforms generic mBERT, and TextCNN provides a useful middle point between sparse baselines and the best PLMs. This pattern is consistent with low-resource sentiment studies that emphasize language fit and dataset characteristics, not only the number of updated parameters \cite{lamin2025cross,subramanian2025kec_tech_titans,chowdhury2025mysticciol}. The competitiveness of SVM and Logistic Regression also indicates that many Lao app-review decisions still rely on short lexical sentiment cues.
-
 \begin{table}[!htbp]
 \centering
 \caption{Overall performance grouped by model family and training strategy.}
@@ -473,6 +472,9 @@ S[table-format=1.4]|}
 \label{tab:overall_results}
 \end{table}
 
+Table~\ref{tab:overall_results} and Fig.~\ref{fig:metric_overview} show that backbone suitability matters more than simply moving from sparse to neural baselines, or from LoRA to Full Fine-tuning within the same PLM family. XLM-RoBERTa remains the strongest model family, mBERT-Lao clearly outperforms generic mBERT, and TextCNN provides a useful middle point between sparse baselines and the best PLMs. This pattern is consistent with low-resource sentiment studies that emphasize language fit and dataset characteristics, not only the number of updated parameters \cite{lamin2025cross,subramanian2025kec_tech_titans,chowdhury2025mysticciol}. The competitiveness of SVM and Logistic Regression also indicates that many Lao app-review decisions still rely on short lexical sentiment cues.
+
+
 \begin{figure}[!htbp]
 \centering
 \includesvg[width=\textwidth]{figures/lineplot_metrics}
@@ -483,15 +485,6 @@ S[table-format=1.4]|}
 The gap between mBERT-Lao and generic mBERT suggests that Lao support is a substantive source of performance gain rather than a minor implementation detail. This aligns with prior LaoPLM-style findings that multilingual pretraining can under-serve Lao when tokenization and corpus coverage are mismatched \cite{lin2022laoplm,lamin2025cross}. TextCNN further shows that a compact from-scratch model can learn review-local patterns effectively, although its lower cross-validation scores suggest greater sensitivity to data variation than the strongest PLMs. Overall, domain adaptation in this benchmark depends on both language-aware representations and sensitivity to concise, review-specific expressions.
 
 \subsubsection{Error Analysis}
-Fig.\ref{fig:error_analysis} helps explain why the model ranking separates so clearly. The strongest systems maintain a more balanced error profile, whereas weaker multilingual transfer is associated with a clear positive-class bias. This matters because the difficult cases are not random; they are concentrated in short complaint-like comments, code-mixed fragments, and mixed-polarity reviews that combine a problem report with a request, update, or partially positive tone. Related low-resource sentiment studies likewise report that short, informal, and mixed-language comments are a recurring source of ambiguity \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol}, but the present results suggest that these cases are especially consequential for Lao app reviews, where limited context and informal phrasing amplify ambiguity.
-
-\enlargethispage{4\baselineskip}
-\begin{figure}[!b]
-\centering
-\includesvg[width=0.90\textwidth]{figures/error_analysis_overview}
-\caption{Aggregated false-negative/false-positive counts and error composition across experiments.}
-\label{fig:error_analysis}
-\end{figure}
 
 Table~\ref{tab:error_examples} illustrates this pattern qualitatively. False positives are usually short complaints whose negative intent is expressed indirectly or through code-mixed wording, whereas false negatives more often contain softened criticism, requests, or mixed cues. The dominant failure mode is therefore semantic ambiguity in short feedback, rather than annotation instability alone.
 
@@ -591,6 +584,20 @@ bug {\tablelaofont ຫລາຍ}
 \end{tabularx}
 \end{table}
 
+Fig.\ref{fig:error_analysis} helps explain why the model ranking separates so clearly. The strongest systems maintain a more balanced error profile, whereas weaker multilingual transfer is associated with a clear positive-class bias. This matters because the difficult cases are not random; they are concentrated in short complaint-like comments, code-mixed fragments, and mixed-polarity reviews that combine a problem report with a request, update, or partially positive tone. Related low-resource sentiment studies likewise report that short, informal, and mixed-language comments are a recurring source of ambiguity \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol}, but the present results suggest that these cases are especially consequential for Lao app reviews, where limited context and informal phrasing amplify ambiguity.
+
+\enlargethispage{4\baselineskip}
+\begin{figure}[!b]
+\centering
+\includesvg[width=0.90\textwidth]{figures/error_analysis_overview}
+\caption{Aggregated false-negative/false-positive counts and error composition across experiments.}
+\label{fig:error_analysis}
+\end{figure}
+
+
+
+
+
 Fig.\ref{fig:short_fail_wordcloud} provides a phrase-level view of the same error set using the 30 most frequent short false-positive and false-negative samples.
 
 \begin{figure}[!htbp]
@@ -609,7 +616,7 @@ Fig.\ref{fig:short_fail_wordcloud} provides a phrase-level view of the same erro
 \label{fig:short_fail_wordcloud}
 \end{figure}
 
-\FloatBarrier
+% \FloatBarrier
 \subsubsection{Practical Implications}
 From a deployment perspective, XLM-RoBERTa is the strongest choice when predictive quality is the main priority. TextCNN offers a practical middle ground, reaching 0.9403 $F_1$-macro on the fixed split in 11.28 minutes. Table~\ref{tab:efficiency} shows that LoRA cuts the trainable footprint by roughly two orders of magnitude and substantially reduces PLM training time, while the $F_1$ drop remains small for XLM-RoBERTa. SVM remains a credible low-cost baseline when infrastructure constraints dominate.
 
