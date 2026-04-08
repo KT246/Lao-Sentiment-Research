@@ -27,6 +27,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{placeins}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{titlesec}
@@ -36,6 +37,8 @@
 \newcommand{\correctcue}{\textcolor{blue!70!black}{\textbf{\ensuremath{\checkmark}}}}
 \newcommand{\linkcue}[1]{\textcolor{teal!70!black}{\textbf{(#1)}}}
 \usepackage{svg}
+\newif\ifwindows
+\IfFileExists{C:/Program Files/Inkscape/bin/inkscape.exe}{\windowstrue}{\windowsfalse}
 \ifwindows
 \svgsetup{
   inkscapeexe={"C:/Program Files/Inkscape/bin/inkscape.exe"},
@@ -84,10 +87,10 @@
 \author{
 \begin{tabular}{c}
 Khamtay Kongmanh\textsuperscript{1}, Quang-Vinh Pham\textsuperscript{2}, Quang-Hung Le\textsuperscript{1*} \\[0.55em]
-\textsuperscript{1} Department of Information Technology, Quy Nhon University, Gia Lai, Vietnam \\
-kongmanh4551050274@st.qnu.edu.vn, lequanghung@qnu.edu.vn \\[0.45em]
-\textsuperscript{2} Department of Data Science, TMA Tech Group, Gia Lai, Vietnam \\
-pqvinh@tma.com.vn
+\small \textsuperscript{1} Department of Information Technology, Quy Nhon University, Gia Lai, Vietnam \\
+\small kongmanh4551050274@st.qnu.edu.vn, lequanghung@qnu.edu.vn \\[0.45em]
+\small \textsuperscript{2} Department of Data Science, TMA Tech Group, Gia Lai, Vietnam \\
+\small pqvinh@tma.com.vn
 \end{tabular}
 }
 \maketitle
@@ -118,11 +121,11 @@ Lao Sentiment Classification, Pre-trained Language Models, TextCNN, LoRA, Low-re
 
 % The remainder of this paper is organized as follows. Section~\ref{sec:related_work} contextualizes our study within the broader landscape of low-resource sentiment analysis and PLM evolution. Section~\ref{sec:dataset} details the LaosSA dataset construction, covering data collection, annotation, and the cleaning pipeline. Section~\ref{sec:methodology} formalizes the classification task and presents the modeling framework and fine-tuning strategies. Section~\ref{sec:experiments} reports our experimental configurations, results, and critical discussion. Finally, Section~\ref{sec:conclusion} concludes the paper and delineates future research directions.
 
-Sentiment analysis stands at the core of the contemporary digital economy; it now can be used by service providers to extract actionable insights from the immense volume of unstructured comments received from online marketplaces and digital-service services \cite{tan2023survey,alahmadi2025generalizing,10.1007/978-3-032-21625-0_12}. Automatic classification of the user sentiment is an important but underrepresented frontier for the Lao digital ecosystem. While AI-based sentiment classification in Lao would enable scalable analysis of customer satisfaction across app stores and social media, it has not been able to replicate any large-scale analysis because of the dearth of annotated corpora, standardized benchmarks, and mature Natural Language Processing (NLP) toolchains \cite{lin2022laoplm,nguyen2025semi,phatthiyaphaibun_2022_6833407}. The resource gap is further compounded by the inherent linguistic complexities of the Lao script. As a continuous, non-linear script (an abugida) lacking explicit word delimiters, Lao presents significant challenges to standard tokenization and morphological parsing \cite{nguyen2025semi}. Moreover, real-world digital discourse in Lao is often noisy and filled with high levels of semantic noise, colloquialism, and code-mixed patterns \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview}, making it complicated to directly transfer training models on formal or high-resource data sets. In this way, methodologies optimized for high-resource languages often fail to capture the subtle polarity of Lao mobile application reviews. However, traditional rule-based and classical machine learning methods sometimes suffer the same shortcomings and often require extensive feature engineering: they lack contextual depth. This has led to a rise in Pre-trained Language Models (PLMs). However, generalized multilingual PLMs often underrepresent low-resource languages and hence suffer from sub-optimal representation mappings and tokenization inefficiencies \cite{lin2022laoplm}. This reinforces the call for a serious comparative study of the state-of-the-art multilingual PLMs (XLM-RoBERTa \cite{conneau2020unsupervised}, mBERT \cite{devlin2019bert}), Lao-specific models (mBERT-Lao \cite{lin2022laoplm}), and lightweight neural and sparse baselines. We propose that the tradeoff between Lao focused pre-training and multilingual transfer is superior, and consider tuning the parameters of adaptive model, such that they can maintain these advantages at a fraction of the input processing costs. Let us introduce \textit{LaosSA}, a complete benchmark for the classification of Lao sentiment, using a filtered dataset of 25,139 reviews of mobile applications. Key insights: Our contributions include these:
+Sentiment analysis helps digital-service providers extract actionable information from large volumes of user feedback \cite{tan2023survey,alahmadi2025generalizing,10.1007/978-3-032-21625-0_12}. For Lao, however, large-scale sentiment classification remains limited by the scarcity of annotated corpora, standardized benchmarks, and mature NLP toolchains \cite{lin2022laoplm,nguyen2025semi,phatthiyaphaibun_2022_6833407}. The problem is further complicated by the Lao script itself, which is continuous and non-linear, and by real app-store reviews that are short, noisy, and often code-mixed \cite{nguyen2025semi,subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview}. As a result, rule-based and classical methods often require heavy feature engineering, while generic multilingual PLMs may still underrepresent Lao \cite{lin2022laoplm}. These constraints motivate a direct comparison among multilingual PLMs (XLM-RoBERTa \cite{conneau2020unsupervised}, mBERT \cite{devlin2019bert}), a Lao-supporting model (mBERT-Lao \cite{lin2022laoplm}), and lightweight neural and sparse baselines under both full fine-tuning and parameter-efficient adaptation. To address this gap, we introduce \textit{LaosSA}, a benchmark for Lao sentiment classification built from a filtered dataset of 25,139 mobile-application reviews. Our main contributions are:
 \begin{itemize}
-\item We present a high-quality Lao sentiment dataset, manually annotated according to the qualitative characteristics, which was specifically curated from Mobile Application reviews to learn from actual, the real colloquial script and code mixing conditions.
-\item We also set up a high-performance benchmark for different modeling pipelines to check cross-lingual transfer, monolingual pre-training, Low-Rank Adaptation (LoRA) \cite{hu2022lora} and Textual Convolutional Neural Network (TextCNN) from scratch neural training.
-\item We conduct multi-dimensional analyses of predictive performance, error patterns, and training efficiency, thereby offering actionable insights into the trade-off between model quality and computational resource requirements for Lao NLP.
+\item We present a filtered Lao sentiment dataset curated from mobile-application reviews and annotated to reflect real colloquial and code-mixed usage.
+\item We establish a benchmark covering multilingual transfer, Lao-aware pre-training, LoRA \cite{hu2022lora}, sparse baselines, and TextCNN.
+\item We provide a joint analysis of predictive performance, error patterns, and efficiency trade-offs for practical Lao NLP deployment.
 \end{itemize}
 The rest of this paper is structured as follows. Section~\ref{sec:related_work} situates the study within the broader low-resource sentiment analysis and PLM landscape as it relates to broader trends. The construction of the LaosSA dataset and the steps of data collection, annotation and cleaning pipeline is described in Section~\ref{sec:dataset}. Section~\ref{sec:methodology} formalizes the classification task and introduces the modelling framework and their refinement steps of fine-tuning. Section~\ref{sec:experiments} presents our configurations of experiments, results and critical discussion. Section~\ref{sec:conclusion} ends the paper and presents potential future research directions.
 
@@ -130,36 +133,25 @@ The rest of this paper is structured as follows. Section~\ref{sec:related_work} 
 \section{Related Work}
 \label{sec:related_work}
 
-The evolution of Lao sentiment analysis has followed the broader trajectory of PLM development and low-resource adaptation, spanning general multilingual baselines and dedicated Lao-specific benchmarks.
+Lao sentiment analysis has developed along the broader trajectory of multilingual PLMs and low-resource adaptation. mBERT \cite{devlin2019bert} introduced multilingual pre-training, but its shared vocabulary can under-serve Lao and fragment continuous-script inputs. XLM-RoBERTa \cite{conneau2020unsupervised} improved cross-lingual representations, yet it remains a generic multilingual model that does not directly address Lao-specific tokenization or noisy informal reviews.
 
-Early progress was marked by the introduction of multilingual BERT (mBERT) in 2019 \cite{devlin2019bert}, which provided the first massive transformer pre-training for over 100 languages, including zero-shot capabilities for low-resource scripts. However, a major limitation of mBERT remains its sub-optimal representation of Lao due to a shared vocabulary that assigns limited capacity to low-resource languages, often resulting in fragmented subword tokens for continuous scripts. This was partially addressed by XLM-RoBERTa (XLM-R) in 2020 \cite{conneau2020unsupervised}, which scaled up training data and refined cross-lingual representations. While XLM-R demonstrates significantly stronger zero-shot and few-shot performance, its primary limitation in the Lao context remains its generic pre-training objective, which does not explicitly account for the specific character boundaries or the noisy, informal code-mixing prevalent in modern digital communication.
+A related regional example is Vietnamese e-commerce sentiment classification, where recent work reports strong fine-tuning results while also highlighting domain adaptation, informal language, and code-mixing challenges that are relevant to our setting \cite{10.1007/978-3-032-21625-0_12}. More broadly, Lao NLP remains constrained by limited corpora, benchmarks, and preprocessing tools \cite{lin2022laoplm,nguyen2025semi}. Because Lao is written as a continuous script, preprocessing errors can easily propagate into downstream sentiment models \cite{nguyen2025semi}.
 
-A closely related regional example is Vietnamese e-commerce sentiment classification, where recent work reports strong results from fine-tuning PhoBERT, viBERT, and XLM-RoBERTa variants while also highlighting informal language, code-mixing, and domain-adaptation challenges that are relevant to our setting \cite{10.1007/978-3-032-21625-0_12}.
+The introduction of LaoPLM in 2022 marked the first dedicated Lao-oriented pre-trained model \cite{lin2022laoplm}. It improved formal Lao text classification, but its evaluation did not fully cover short, noisy mobile-app reviews. More recently, Nguyen et al. \cite{nguyen2025semi} expanded Lao resources through semi-supervised word segmentation, again emphasizing data construction rather than sentiment classification in informal review settings.
 
-Low-resource language processing is still constrained by the lack of large corpora, annotated benchmarks, and mature preprocessing tools. For Lao, this limitation has been noted in work on word segmentation, text classification, and broader resource construction \cite{lin2022laoplm,nguyen2025semi}. Because Lao is written as a continuous script, preprocessing itself can become a source of error: tokenization and boundary detection are less straightforward than in whitespace-delimited languages \cite{nguyen2025semi}. This challenge is directly relevant to the current dataset, where many user reviews are very short and noisy.
-
-The landscape shifted in 2022 with the introduction of LaoPLM \cite{lin2022laoplm}, the first dedicated Lao-specific pre-trained model. Its strength lies in its ability to outperform generic multilingual models on formal Lao text classification by leveraging monolingual pre-training. Nevertheless, the evaluations in LaoPLM were constrained by relatively small datasets and formal registers, leaving the task of analyzing noisy, colloquial mobile app reviews largely unaddressed. More recently, in 2025, efforts by Nguyen et al. \cite{nguyen2025semi} established a semi-supervised word-segmented corpus using large language models. While this work successfully expanded the dataset resources for Lao, the focus remained on categorization and resource generation rather than on the nuanced polarity shifts found in short-text sentiments.
-
-PLMs are now the dominant backbone for text classification because they provide contextualized representations that can be adapted across tasks \cite{han2021pre,min2023recent}. For Lao, the distinction between monolingual and multilingual PLMs is particularly important \cite{lin2022laoplm}. A Lao-oriented model can better reflect local tokenization behavior and lexical patterns, whereas multilingual models benefit from broader pretraining but may devote less capacity to low-resource languages \cite{lin2022laoplm,ruder2021xtreme,han2021pre}.
-
-Recent low-resource sentiment studies still report clear gains from transformer-based models, but they also show that performance depends on language fit, adaptation strategy, and dataset characteristics \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview}. This is why our experiments compare XLM-RoBERTa and mBERT with mBERT-Lao, while also retaining a lightweight TextCNN and strong sparse baselines in the benchmark.
-
-Our work (LaosSA, 2026) represents the next milestone by addressing these gaps across three dimensions: scale, domain, and adaptation strategy. Unlike prior benchmarks, LaosSA provides a large-scale (25,139 samples) filtered dataset specifically curated from mobile application reviews, capturing real-world noise and code-mixed patterns. Furthermore, we evaluate both full fine-tuning and Parameter-Efficient Fine-Tuning (PEFT) via LoRA to establish practical deployment baselines that were previously underexplored for the Lao digital ecosystem.
+PLMs now dominate text classification because they provide transferable contextual representations \cite{han2021pre,min2023recent}. For Lao, the key question is whether broader multilingual transfer or stronger language fit is more useful in practice \cite{lin2022laoplm,ruder2021xtreme,han2021pre}. Recent low-resource sentiment studies also show that performance depends not only on architecture, but also on adaptation strategy and dataset characteristics \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol,durairaj2025overview}. LaosSA addresses these gaps by combining scale, noisy review data, and adaptation-focused benchmarking in one setting.
 
 \section{Dataset Construction and Analysis}
 \label{sec:dataset}
 
 This section details the construction and systematic refinement of the Lao sentiment benchmark, covering data collection from digital-service platforms, the manual annotation process, and the multi-stage filtering pipeline designed to ensure dataset quality.
 
-\subsection{Data Collection}
+\subsection{Data Collection and Annotation}
 \label{subsec:data_collection}
 
 The reviews used in this study were collected from Google Play applications that are widely used in Laos. The corpus includes comments from banking apps, social media apps, and other digital-service applications rather than from a single e-commerce marketplace. This choice was practical: these applications produced enough Lao user feedback to build a usable sentiment dataset, and they reflect the short mobile reviews that a deployed Lao sentiment system would need to handle.
 
 Each record contains two fields, namely the review text and a binary sentiment label. The final benchmark also retains short code-mixed reviews in which Lao words appear together with English interface terms such as \textit{app}, \textit{bug}, or \textit{OK}, provided that the overall sentiment remains interpretable. This choice keeps the released benchmark closer to real mobile feedback in Laos and directly corresponds to the code-mixing setting referenced in the released resources.
-
-\subsection{Annotation Scheme}
-\label{subsec:annotation_scheme}
 
 The raw reviews were manually annotated with binary sentiment labels. Each review was assigned a single label based on its overall polarity: label 1 for positive sentiment and label 0 for negative sentiment. The annotation process focused on the dominant sentiment expressed in each review, including explicit praise, complaints, dissatisfaction, or statements about overall user experience. 
 
@@ -186,7 +178,7 @@ After this filtering process, the remaining reviews formed the final dataset use
 
 Table~\ref{tab:train_val_stats} summarizes the final train and validation splits after cleaning and filtering. The two partitions remain closely matched in class balance and contain no missing text or labels. The reviews are short on average, with only a small number of much longer comments, which is consistent with the brief and noisy style of app-store feedback.
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
 \caption{Final train and validation split statistics for the Lao review benchmark after filtering and preprocessing.}
 \small
@@ -250,7 +242,7 @@ The evaluation protocol follows the final filtered split described in Section~\r
 
 We evaluate three PLMs: XLM-RoBERTa \cite{conneau2020unsupervised}, mBERT \cite{devlin2019bert}, and mBERT-Lao \cite{lin2022laoplm}. XLM-RoBERTa and mBERT serve as multilingual references for cross-lingual transfer \cite{ruder2021xtreme,han2021pre,min2023recent}, while mBERT-Lao provides a Lao-supporting alternative \cite{lin2022laoplm}. Table~\ref{tab:plm_overview} summarizes the main properties of the three models under the benchmark-facing names used throughout this paper. All PLM runs share the same preprocessing and evaluation protocol, and the LoRA setting attaches adapters to the query, key, and value projections.
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
 \caption{Pre-training and architectural comparison of the PLMs used in the benchmark.}
 \small
@@ -294,7 +286,7 @@ For cross-validation, out-of-fold predictions from all $K$ folds are concatenate
 \end{equation}
 where $\hat{D}^{(k)}_{\text{val}}$ denotes the predictions produced by the best checkpoint of fold $k$ on its held-out partition.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/Lao_Finetuning_Framework_Sentiment_Analysis.png}
 \caption{Overall methodology framework for Lao sentiment classification, including dataset preparation, model selection, and training strategies.}
@@ -317,7 +309,7 @@ We train the PLMs with standard pretrained-model tooling and fine-tuning practic
 
 Algorithm~\ref{alg:benchmark_pipeline} summarizes the unified benchmark pipeline used throughout the experiments. It reflects the fixed-split baseline runs, the PLM-based fixed-split runs, and the separate 3-fold cross-validation setting reported later in Section~\ref{sec:experiments}.
 
-\begin{algorithm}[H]
+\begin{algorithm}[!htbp]
 \caption{Unified training and evaluation pipeline for Lao sentiment classification}
 \label{alg:benchmark_pipeline}
 \small
@@ -368,7 +360,7 @@ This section outlines the experimental configuration, baseline selections, and e
 
 We begin by specifying the compared systems, the evaluation metrics, and the implementation details required to reproduce the benchmark.
 
-\subsubsection{Compared Models}
+\subsubsection{Compared Models and Implementation Details}
 The benchmark combines classical baselines, a lightweight neural baseline, and PLM-based models. The classical group contains Logistic Regression, SVM, and Decision Tree \cite{pedregosa2011scikit}. The neural baseline is TextCNN \cite{kim2014convolutional}, evaluated under from-scratch training and 3-Fold Cross-Validation. The PLM group contains XLM-RoBERTa \cite{conneau2020unsupervised}, mBERT \cite{devlin2019bert}, and mBERT-Lao \cite{lin2022laoplm}, each evaluated with Full Fine-tuning, LoRA \cite{hu2022lora}, and 3-Fold Cross-Validation. This setup creates a controlled comparison between sparse models, a compact neural model, and pretrained transformers on the same Lao review data.
 
 The classical baselines were trained on the same fixed train-validation split used for the fixed-split PLM runs. They use character-level TF-IDF features with an $n$-gram range of 3-5, \texttt{min\_df}=2, and at most 50,000 features. Logistic Regression and SVM were implemented through \texttt{SGDClassifier} with \texttt{log\_loss} and \texttt{hinge} objectives, respectively, while Decision Tree used \texttt{max\_depth}=40 and \texttt{min\_samples\_leaf}=2. TextCNN uses 128-dimensional trainable embeddings, 128 filters for each kernel size in $\{3,4,5\}$, and dropout 0.3, giving the benchmark a compact neural reference that does not depend on pretrained weights.
@@ -392,10 +384,9 @@ The macro-averaged scores reported in this paper are then
 \end{equation}
 where $c$ indexes a sentiment class and $C=2$ for the negative and positive labels. Here, $TP$, $TN$, $FP$, and $FN$ denote true positives, true negatives, false positives, and false negatives, respectively, while $TP_c$, $FP_c$, and $FN_c$ are the corresponding class-specific counts used to compute $P_c$ and $R_c$ for class $c$.
 
-\subsubsection{Implementation Details}
 The experiments use the final filtered Lao review dataset described in Section~\ref{subsec:dataset_statistics}. Logistic Regression, SVM, Decision Tree, and fixed-split TextCNN were trained on the same validation split as the fixed-split PLM runs, while 3-fold cross-validation was applied on the training partition for the PLMs and for TextCNN. The exact hyperparameters are listed in Table~\ref{tab:training_config}; the main difference across PLM runs is whether the full backbone is updated or only LoRA adapters are trained. Runtime metadata recorded across 14 experiment folders indicate a Tesla T4 GPU with 14.56 GB GPU memory, 12.67 GB RAM, and 1 physical CPU core (2 total cores).
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
 \caption{Training configuration used in the experiments.}
 \small
@@ -423,12 +414,12 @@ Baseline features & TF-IDF char $n$-grams (3--5), max 50,000 \\
 % \subsubsection{Overall Performance}
 % Taken together, Table~\ref{tab:overall_results} and Fig.\ref{fig:metric_overview} indicate that backbone suitability matters more than simply moving from sparse to neural baselines, or from LoRA to Full Fine-tuning within the same PLM family. TextCNN provides a strong middle point: on the fixed split it outperforms Logistic Regression and approaches SVM, yet the best scores still come from the XLM-RoBERTa variants. This interpretation is consistent with low-resource sentiment studies that attribute transfer quality mainly to language fit and data characteristics rather than to simply updating more parameters \cite{lamin2025cross,subramanian2025kec_tech_titans,chowdhury2025mysticciol}. The benchmark also shows that sparse baselines remain meaningful for Lao app reviews, suggesting that the task still contains strong lexical sentiment cues even when pretrained encoders are available.
 
-We present the principal performance trend and analyze errors and efficiencies to rationalize the trade-off we observed.
+We now summarize the main performance pattern before turning to error behavior and efficiency trade-offs.
 
-\subsubsection{Overall Performance}  
-Taken together, Table~\ref{tab:overall_results} and Fig.~\ref{fig:metric_overview} suggest that the suitability of the backbone is more important than moving from sparse to neural baselines, or from LoRA to Full Fine-tuning within the same PLM family. TextCNN is strong in the middle and performs better here than Logistic Regression and achieves an SVM-like performance, yet the best scores still come from XLM-RoBERTa variants. This interpretation is consistent with low-resource sentiment studies, which have largely attributed transfer quality to the choice of language as well as data features, rather than simply more parameters being updated \cite{lamin2025cross,subramanian2025kec_tech_titans,chowdhury2025mysticciol}. The benchmark also indicates that sparse baselines are still meaningful for Lao app reviews, which means this task still contains strong lexical sentiment cues even when pretrained encoders are available.
+\subsubsection{Overall Performance and Domain Adaptation}
+Table~\ref{tab:overall_results} and Fig.~\ref{fig:metric_overview} show that backbone suitability matters more than simply moving from sparse to neural baselines, or from LoRA to Full Fine-tuning within the same PLM family. XLM-RoBERTa remains the strongest model family, mBERT-Lao clearly outperforms generic mBERT, and TextCNN provides a useful middle point between sparse baselines and the best PLMs. This pattern is consistent with low-resource sentiment studies that emphasize language fit and dataset characteristics, not only the number of updated parameters \cite{lamin2025cross,subramanian2025kec_tech_titans,chowdhury2025mysticciol}. The competitiveness of SVM and Logistic Regression also indicates that many Lao app-review decisions still rely on short lexical sentiment cues.
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
 \caption{Overall performance grouped by model family and training strategy.}
 \small
@@ -488,20 +479,19 @@ S[table-format=1.4]|}
 \label{tab:overall_results}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includesvg[width=\textwidth]{figures/lineplot_metrics}
 \caption{Metric comparison across all benchmarked settings, sorted by $F_1$-macro.}
 \label{fig:metric_overview}
 \end{figure}
 
-\subsubsection{Domain Adaptation Analysis}
-The gap between mBERT-Lao and generic mBERT suggests that Lao support is not a minor implementation detail but a substantive source of performance difference. This interpretation aligns with LaoPLM and related low-resource work, which argue that multilingual pretraining can under-serve Lao when tokenization behavior and corpus coverage are mismatched \cite{lin2022laoplm,lamin2025cross}. TextCNN further demonstrates that a compact neural model can learn substantive review-local patterns through from-scratch training, achieving competitive performance without the necessity of expensive pre-training stages. However, its slightly lower cross-validation scores relative to its fixed-split peak suggest that from-scratch neural learning remains more sensitive to distribution shifts and training-data variability than the robust representations provided by the strongest PLMs. At the same time, the competitiveness of SVM and Logistic Regression indicates that many app-review decisions are driven by local lexical cues and short formulaic complaints. In other words, domain adaptation in this dataset appears to depend on both language-aware representations and sensitivity to concise, review-specific expressions.
+The gap between mBERT-Lao and generic mBERT suggests that Lao support is a substantive source of performance gain rather than a minor implementation detail. This aligns with prior LaoPLM-style findings that multilingual pretraining can under-serve Lao when tokenization and corpus coverage are mismatched \cite{lin2022laoplm,lamin2025cross}. TextCNN further shows that a compact from-scratch model can learn review-local patterns effectively, although its lower cross-validation scores suggest greater sensitivity to data variation than the strongest PLMs. Overall, domain adaptation in this benchmark depends on both language-aware representations and sensitivity to concise, review-specific expressions.
 
 \subsubsection{Error Analysis}
 Fig.\ref{fig:error_analysis} helps explain why the model ranking separates so clearly. The strongest systems maintain a more balanced error profile, whereas weaker multilingual transfer is associated with a clear positive-class bias. This matters because the difficult cases are not random; they are concentrated in short complaint-like comments, code-mixed fragments, and mixed-polarity reviews that combine a problem report with a request, update, or partially positive tone. Related low-resource sentiment studies likewise report that short, informal, and mixed-language comments are a recurring source of ambiguity \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol}, but the present results suggest that these cases are especially consequential for Lao app reviews, where limited context and informal phrasing amplify ambiguity.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includesvg[width=\textwidth]{figures/error_analysis_overview}
 \caption{Error-analysis overview based on the aggregated false-positive and false-negative samples from all experiments. Panel (a) reports raw false-negative and false-positive counts, while panel (b) shows the corresponding error composition percentages for the same experiments.}
@@ -510,12 +500,11 @@ Fig.\ref{fig:error_analysis} helps explain why the model ranking separates so cl
 
 Table~\ref{tab:error_examples} illustrates this pattern qualitatively. False positives are usually short complaints whose negative intent is expressed indirectly or through code-mixed wording, whereas false negatives more often contain softened criticism, requests, or mixed cues. The dominant failure mode is therefore semantic ambiguity in short feedback, rather than annotation instability alone.
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
 \caption{Representative Examples of Fixed-Split Error Patterns}
 \label{tab:error_examples}
 
-\vspace{0.5em}
 
 \footnotesize
 \setlength{\tabcolsep}{5pt}
@@ -607,40 +596,37 @@ bug {\tablelaofont ຫລາຍ}
 \end{tabularx}
 \end{table}
 
-Fig.\ref{fig:short_fail_wordcloud} provides a complementary phrase-level view of the same error set using the 30 most frequent short false-positive and false-negative samples. This visualization is intended as a qualitative summary of recurring failure expressions rather than as a replacement for the quantitative counts in Fig.\ref{fig:error_analysis}.
+Fig.\ref{fig:short_fail_wordcloud} provides a phrase-level view of the same error set using the 30 most frequent short false-positive and false-negative samples.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\begin{minipage}[t]{0.48\textwidth}
+\begin{minipage}[t]{0.42\textwidth}
 \centering
 \includesvg[width=\linewidth]{figures/short_fail_wordcloud_fp}
-
-\vspace{0.25em}
 {\small (a) False Positives}
 \end{minipage}\hfill
-\begin{minipage}[t]{0.48\textwidth}
+\begin{minipage}[t]{0.42\textwidth}
 \centering
 \includesvg[width=\linewidth]{figures/short_fail_wordcloud_fn}
-
-\vspace{0.25em}
 {\small (b) False Negatives}
 \end{minipage}
-\caption{Phrase-level word clouds built from the 30 most frequent short false-positive and false-negative samples in the fixed-split experiments. Larger phrases indicate more frequently repeated failure cases.}
+\caption{Word clouds for the 30 most frequent short failure cases. Larger phrases indicate higher frequency.}
 \label{fig:short_fail_wordcloud}
 \end{figure}
 
+\FloatBarrier
 \subsubsection{Practical Implications}
-From a deployment perspective, the results support a tiered selection strategy. When predictive quality is the main priority, XLM-RoBERTa is the most reliable choice. When computational efficiency and localized learning are prioritized over massive parameter transfer, the from-scratch TextCNN model offers a useful middle ground: it reaches 0.9403 $F_1$-macro on the fixed split in only 11.28 minutes. Within the PLM family, LoRA offers a better trade-off than retraining the full model. Although this study does not report dedicated inference latency, the much smaller trainable footprint of LoRA suggests lower adaptation and deployment overhead than full fine-tuning in resource-constrained settings. When infrastructure or maintenance constraints dominate, SVM remains a credible baseline because it is stable, interpretable, and inexpensive to train. More broadly, the benchmark suggests that practical Lao sentiment systems should be selected not only by raw accuracy, but also by how well they balance language fit, efficiency, and operational simplicity.
+From a deployment perspective, XLM-RoBERTa is the strongest choice when predictive quality is the main priority. When efficiency matters more, TextCNN offers a practical middle ground, reaching 0.9403 $F_1$-macro on the fixed split in 11.28 minutes. Within the PLM family, LoRA provides the better efficiency-quality trade-off, while SVM remains a credible low-cost baseline when infrastructure constraints dominate. Practical Lao sentiment systems should therefore be selected by balancing language fit, efficiency, and operational simplicity rather than raw accuracy alone.
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\caption{Efficiency comparison between full fine-tuning (FT) and LoRA.}
-\small
-\renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{4pt}
+\caption{FT vs.\ LoRA efficiency comparison.}
+\footnotesize
+\renewcommand{\arraystretch}{1.0}
+\setlength{\tabcolsep}{3pt}
 \begin{tabular}{|p{0.20\textwidth}|p{0.07\textwidth}|r|r|r|r|r|}
 \hline
-\textbf{Model Family} & \textbf{Strat.} & \textbf{Params} & \textbf{Ratio} & \textbf{Epoch (s)} & \textbf{Total (min)} & \textbf{$F_1$} \\
+\textbf{Model Family} & \textbf{Strat.} & \textbf{Params} & \textbf{Ratio} & \textbf{Epoch (s)} & \textbf{Total (m)} & \textbf{$F_1$} \\
 \hline
 {\textbf{XLM-RoBERTa}}
 & FT   & 278.0M          & 1.0000          & 267.3          & 111.4          & \textbf{0.9617} \\
@@ -663,8 +649,8 @@ From a deployment perspective, the results support a tiered selection strategy. 
 
 \begin{figure}[H]
 \centering
-\includesvg[width=\textwidth]{figures/lineplot_timing}
-\caption{Timing comparison across all benchmarked settings, sorted by average epoch time.}
+\includesvg[width=0.86\textwidth]{figures/lineplot_timing}
+\caption{Timing comparison across benchmark settings.}
 \label{fig:timing}
 \end{figure}
 
@@ -675,9 +661,9 @@ From a deployment perspective, the results support a tiered selection strategy. 
 
 % Despite these advancements, the study identifies critical challenges posed by linguistic ambiguity, noise, and semantic shifts in code-mixed environments. Future research should prioritize enhancing dataset diversity and label consistency, while exploring more granular analysis frameworks, such as aspect-level sentiment classification, to provide deeper insights into user experience. By releasing our dataset and trained models, we aim to support the development of more scalable and accurate NLP tools for the Lao digital ecosystem.
 
-A comprehensive benchmark for Lao sentiment classification was set up by using a large-scale, filtered dataset of real-world mobile application reviews in this study. We show in our systematic evaluation across different models, spanning classical sparse baselines, from-scratch neural references as well as best-of-breed PLMs that while XLM-RoBERTa delivers the most robust performance, the choice of adaptation strategy and language support are essential components in Lao NLP. In particular we show that (i) monolingual pre-training and cross-lingual transfer (XLM-RoBERTa) routinely outperform those based on generic multilingualism; (ii) using LoRA has good quality at minimal computational overhead; (iii) lightweight from-scratch neural training (TextCNN) gives an authoritative reference that can learn review-specific patterns without PLM weights. While doing so, the study also notes significant problems surrounding linguistic ambiguity, noise, and semantic shifts within code-mixed spaces. 
+This study establishes a benchmark for Lao sentiment classification using a filtered dataset of real-world mobile-application reviews. XLM-RoBERTa provides the strongest overall performance, while language fit and adaptation strategy remain decisive for Lao NLP. Lao-aware or stronger cross-lingual transfer outperforms generic multilingual baselines, LoRA preserves much of the PLM quality at lower training cost, and TextCNN remains a credible lightweight reference for noisy, code-mixed reviews.
 
-In addition, we recommend that future research work primarily on diversity of datasets and consistency for labels while examining more granular techniques for studying aspect-level sentiment in order to gain a clearer grasp on users' experience. We aim to help scale up and train more precise NLP tools in the Lao digital ecosystem by providing the Lao digital ecosystem with our dataset and trained models.
+Future work should expand dataset diversity, improve label consistency, and explore finer-grained settings such as aspect-level sentiment analysis. Releasing the dataset and models should support more practical Lao NLP tools.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
