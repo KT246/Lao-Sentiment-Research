@@ -180,33 +180,23 @@ Table~\ref{tab:train_val_stats} summarizes the final train and validation splits
 
 \begin{table}[!htbp]
 \centering
-\caption{Final train and validation split statistics for the Lao review benchmark after filtering and preprocessing.}
-\small
-\setlength{\tabcolsep}{10pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabular}{@{}p{0.54\textwidth}rr@{}}
+\caption{Train and validation statistics after filtering and preprocessing.}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{0.11\textwidth}>{\raggedleft\arraybackslash}p{0.11\textwidth}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{0.11\textwidth}>{\raggedleft\arraybackslash}p{0.11\textwidth}@{}}
 \toprule
-\textbf{Statistic} & \textbf{Train} & \textbf{Validation} \\
+\textbf{Statistic} & \textbf{Train} & \textbf{Val.} & \textbf{Statistic} & \textbf{Train} & \textbf{Val.} \\
 \midrule
-Rows & 20,111 & 5,028 \\
-Columns & 2 & 2 \\
-Empty text & 0 & 0 \\
-Empty label & 0 & 0 \\
-Unique text & 20,095 & 5,028 \\
-Duplicated text within split & 16 & 0 \\
-\addlinespace[0.2em]
-Negative reviews (Label = 0) & 6,312 (31.39\%) & 1,578 (31.38\%) \\
-Positive reviews (Label = 1) & 13,799 (68.61\%) & 3,450 (68.62\%) \\
-\addlinespace[0.2em]
-Minimum text length (characters) & 2 & 3 \\
-Average text length (characters) & 29.41 & 30.29 \\
-Maximum text length (characters) & 618 & 506 \\
-\addlinespace[0.2em]
-Minimum word count & 1 & 1 \\
-Average word count & 1.52 & 1.52 \\
-Maximum word count & 66 & 77 \\
+Rows & 20,111 & 5,028 & Columns & 2 & 2 \\
+Empty text & 0 & 0 & Empty label & 0 & 0 \\
+Unique text & 20,095 & 5,028 & Duplicated text & 16 & 0 \\
+Negative reviews (Label = 0) & 6,312 (31.39\%) & 1,578 (31.38\%) & Positive reviews (Label = 1) & 13,799 (68.61\%) & 3,450 (68.62\%) \\
+Min. text length (char.) & 2 & 3 & Min. word count & 1 & 1 \\
+Avg. text length (char.) & 29.41 & 30.29 & Avg. word count & 1.52 & 1.52 \\
+Max. text length (char.) & 618 & 506 & Max. word count & 66 & 77 \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \label{tab:train_val_stats}
 \end{table}
 
@@ -286,7 +276,7 @@ For cross-validation, out-of-fold predictions from all $K$ folds are concatenate
 \end{equation}
 where $\hat{D}^{(k)}_{\text{val}}$ denotes the predictions produced by the best checkpoint of fold $k$ on its held-out partition.
 
-\begin{figure}[!htbp]
+\begin{figure}[!b]
 \centering
 \includegraphics[width=\textwidth]{figures/Lao_Finetuning_Framework_Sentiment_Analysis.png}
 \caption{Overall methodology framework for Lao sentiment classification, including dataset preparation, model selection, and training strategies.}
@@ -491,10 +481,11 @@ The gap between mBERT-Lao and generic mBERT suggests that Lao support is a subst
 \subsubsection{Error Analysis}
 Fig.\ref{fig:error_analysis} helps explain why the model ranking separates so clearly. The strongest systems maintain a more balanced error profile, whereas weaker multilingual transfer is associated with a clear positive-class bias. This matters because the difficult cases are not random; they are concentrated in short complaint-like comments, code-mixed fragments, and mixed-polarity reviews that combine a problem report with a request, update, or partially positive tone. Related low-resource sentiment studies likewise report that short, informal, and mixed-language comments are a recurring source of ambiguity \cite{subramanian2025kec_tech_titans,chowdhury2025mysticciol}, but the present results suggest that these cases are especially consequential for Lao app reviews, where limited context and informal phrasing amplify ambiguity.
 
-\begin{figure}[!htbp]
+\enlargethispage{4\baselineskip}
+\begin{figure}[!b]
 \centering
-\includesvg[width=\textwidth]{figures/error_analysis_overview}
-\caption{Error-analysis overview based on the aggregated false-positive and false-negative samples from all experiments. Panel (a) reports raw false-negative and false-positive counts, while panel (b) shows the corresponding error composition percentages for the same experiments.}
+\includesvg[width=0.90\textwidth]{figures/error_analysis_overview}
+\caption{Aggregated false-negative/false-positive counts and error composition across experiments.}
 \label{fig:error_analysis}
 \end{figure}
 
@@ -616,7 +607,7 @@ Fig.\ref{fig:short_fail_wordcloud} provides a phrase-level view of the same erro
 
 \FloatBarrier
 \subsubsection{Practical Implications}
-From a deployment perspective, XLM-RoBERTa is the strongest choice when predictive quality is the main priority. When efficiency matters more, TextCNN offers a practical middle ground, reaching 0.9403 $F_1$-macro on the fixed split in 11.28 minutes. Within the PLM family, LoRA provides the better efficiency-quality trade-off, while SVM remains a credible low-cost baseline when infrastructure constraints dominate. Practical Lao sentiment systems should therefore be selected by balancing language fit, efficiency, and operational simplicity rather than raw accuracy alone.
+From a deployment perspective, XLM-RoBERTa is the strongest choice when predictive quality is the main priority. TextCNN offers a practical middle ground, reaching 0.9403 $F_1$-macro on the fixed split in 11.28 minutes. Table~\ref{tab:efficiency} shows that LoRA cuts the trainable footprint by roughly two orders of magnitude and substantially reduces PLM training time, while the $F_1$ drop remains small for XLM-RoBERTa. SVM remains a credible low-cost baseline when infrastructure constraints dominate.
 
 \begin{table}[!htbp]
 \centering
@@ -654,6 +645,8 @@ From a deployment perspective, XLM-RoBERTa is the strongest choice when predicti
 \label{fig:timing}
 \end{figure}
 
+Fig.~\ref{fig:timing} extends this pattern to the full benchmark: classical baselines are cheapest, TextCNN is the fastest neural model, and LoRA remains faster than Full Fine-tuning for every PLM family.
+
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -661,9 +654,7 @@ From a deployment perspective, XLM-RoBERTa is the strongest choice when predicti
 
 % Despite these advancements, the study identifies critical challenges posed by linguistic ambiguity, noise, and semantic shifts in code-mixed environments. Future research should prioritize enhancing dataset diversity and label consistency, while exploring more granular analysis frameworks, such as aspect-level sentiment classification, to provide deeper insights into user experience. By releasing our dataset and trained models, we aim to support the development of more scalable and accurate NLP tools for the Lao digital ecosystem.
 
-This study establishes a benchmark for Lao sentiment classification using a filtered dataset of real-world mobile-application reviews. XLM-RoBERTa provides the strongest overall performance, while language fit and adaptation strategy remain decisive for Lao NLP. Lao-aware or stronger cross-lingual transfer outperforms generic multilingual baselines, LoRA preserves much of the PLM quality at lower training cost, and TextCNN remains a credible lightweight reference for noisy, code-mixed reviews.
-
-Future work should expand dataset diversity, improve label consistency, and explore finer-grained settings such as aspect-level sentiment analysis. Releasing the dataset and models should support more practical Lao NLP tools.
+This study establishes a benchmark for Lao sentiment classification using a filtered dataset of real-world mobile-application reviews. XLM-RoBERTa provides the strongest overall performance, while language fit and adaptation strategy remain decisive for Lao NLP. Lao-aware or stronger cross-lingual transfer outperforms generic multilingual baselines, LoRA preserves much of the PLM quality at lower training cost, and TextCNN remains a practical lightweight reference for noisy, code-mixed reviews. Future work should expand dataset diversity, improve label consistency, and explore finer-grained settings such as aspect-level sentiment analysis.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
