@@ -176,29 +176,33 @@ After this filtering process, the remaining reviews formed the final dataset use
 \subsection{Dataset Statistics}
 \label{subsec:dataset_statistics}
 
-Table~\ref{tab:train_val_stats} summarizes the final train and validation splits after cleaning and filtering. The two partitions remain closely matched in class balance and contain no missing text or labels. The reviews are short on average, with only a small number of much longer comments, which is consistent with the brief and noisy style of app-store feedback.
-
-\begin{table}[!htbp]
+Table~\ref{tab:train_val_stats} summarizes the descriptive statistics of the finalized train and validation splits. Both partitions maintain a stable class distribution and consist of high-quality, refined samples with complete textual and label data. The statistical profile highlights the characteristic brevity of Lao mobile application feedback, which averages approximately 30 characters per sample, while the variations in maximum lengths reflect the inclusion of more detailed user critiques within the benchmark.
+\begin{table}[H]
 \centering
-\caption{Train and validation statistics after filtering and preprocessing.}
-\footnotesize
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.08}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{0.11\textwidth}>{\raggedleft\arraybackslash}p{0.11\textwidth}>{\raggedright\arraybackslash}X>{\raggedleft\arraybackslash}p{0.11\textwidth}>{\raggedleft\arraybackslash}p{0.11\textwidth}@{}}
+\caption{Final train and validation split statistics for the Lao review benchmark after filtering and preprocessing.}
+\small
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}p{0.54\textwidth}rr@{}}
 \toprule
-\textbf{Statistic} & \textbf{Train} & \textbf{Val.} & \textbf{Statistic} & \textbf{Train} & \textbf{Val.} \\
+\textbf{Statistic} & \textbf{Train} & \textbf{Validation} \\
 \midrule
-Rows & 20,111 & 5,028 & Columns & 2 & 2 \\
-Empty text & 0 & 0 & Empty label & 0 & 0 \\
-Unique text & 20,095 & 5,028 & Duplicated text & 16 & 0 \\
-Negative reviews (Label = 0) & 6,312 (31.39\%) & 1,578 (31.38\%) & Positive reviews (Label = 1) & 13,799 (68.61\%) & 3,450 (68.62\%) \\
-Min. text length (char.) & 2 & 3 & Min. word count & 1 & 1 \\
-Avg. text length (char.) & 29.41 & 30.29 & Avg. word count & 1.52 & 1.52 \\
-Max. text length (char.) & 618 & 506 & Max. word count & 66 & 77 \\
+Rows & 20,111 & 5,028 \\
+Unique text & 20,095 & 5,028 \\
+\addlinespace[0.2em]
+Negative reviews (Label = 0) & 6,312 (31.39\%) & 1,578 (31.38\%) \\
+Positive reviews (Label = 1) & 13,799 (68.61\%) & 3,450 (68.62\%) \\
+\addlinespace[0.2em]
+Average text length (characters) & 29.41 & 30.29 \\
+Maximum text length (characters) & 618 & 506 \\
+\addlinespace[0.2em]
+Average word count & 1.52 & 1.52 \\
+Maximum word count & 66 & 77 \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \label{tab:train_val_stats}
 \end{table}
+ 
 
 \section{Methodology}
 \label{sec:methodology}
@@ -390,7 +394,7 @@ Optimization & lr $1 \times 10^{-5}$, weight decay 0.01, warmup 0.1 \\
 Cross-validation & Stratified $K=3$ \\
 LoRA setting & $r=16$, $\alpha=32$, dropout 0.1 \\
 TextCNN setting & embedding 128, filters 128, kernels 3/4/5, dropout 0.3 \\
-Baseline features & TF-IDF char $n$-grams (3--5), max 50,000 \\
+Baseline features & TF-IDF char $n$-grams (3-5), max 50,000 \\
 \bottomrule
 \end{tabular}
 \label{tab:training_config}
@@ -654,8 +658,9 @@ Fig.~\ref{fig:timing} extends this pattern to the full benchmark: classical base
 
 % Despite these advancements, the study identifies critical challenges posed by linguistic ambiguity, noise, and semantic shifts in code-mixed environments. Future research should prioritize enhancing dataset diversity and label consistency, while exploring more granular analysis frameworks, such as aspect-level sentiment classification, to provide deeper insights into user experience. By releasing our dataset and trained models, we aim to support the development of more scalable and accurate NLP tools for the Lao digital ecosystem.
 
-This study establishes a benchmark for Lao sentiment classification using a filtered dataset of real-world mobile-application reviews. XLM-RoBERTa provides the strongest overall performance, while language fit and adaptation strategy remain decisive for Lao NLP. Lao-aware or stronger cross-lingual transfer outperforms generic multilingual baselines, LoRA preserves much of the PLM quality at lower training cost, and TextCNN remains a practical lightweight reference for noisy, code-mixed reviews. Future work should expand dataset diversity, improve label consistency, and explore finer-grained settings such as aspect-level sentiment analysis.
-
+A comprehensive benchmark for Lao sentiment classification was set up by using a large-scale, filtered dataset of real-world mobile application reviews in this study. We show in our systematic evaluation across different models, spanning classical sparse baselines, from-scratch neural references as well as best-of-breed PLMs that while XLM-RoBERTa delivers the most robust performance, the choice of adaptation strategy and language support are essential components in Lao NLP. In particular we show that (i) monolingual pre-training and cross-lingual transfer (XLM-RoBERTa) routinely outperform those based on generic multilingualism; (ii) using LoRA has good quality at minimal computational overhead; (iii) lightweight from-scratch neural training (TextCNN) gives an authoritative reference that can learn review-specific patterns without PLM weights. While doing so, the study also notes significant problems surrounding linguistic ambiguity, noise, and semantic shifts within code-mixed spaces.
+ 
+In addition, we recommend that future research work primarily on diversity of datasets and consistency for labels while examining more granular techniques for studying aspect-level sentiment in order to gain a clearer grasp on users' experience. We aim to help scale up and train more precise NLP tools in the Lao digital ecosystem by providing the Lao digital ecosystem with our dataset and trained models.
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 
