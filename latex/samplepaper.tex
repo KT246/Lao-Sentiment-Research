@@ -130,14 +130,7 @@ The rest of this paper is structured as follows. Section~\ref{sec:related_work} 
 \section{Related Work}
 \label{sec:related_work}
 
-The evolution of Lao sentiment analysis has followed the broader trajectory of PLM development and low-resource adaptation. As illustrated in Fig.\ref{fig:timeline}, the progress spans from general multilingual baselines to dedicated Lao-specific benchmarks. 
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{figures/LaosSA.png}
-\caption{Timeline of progress toward Lao sentiment analysis, showing the evolution from multilingual baselines and monolingual pre-trained models to the current LaosSA sentiment benchmark.}
-\label{fig:timeline}
-\end{figure}
+The evolution of Lao sentiment analysis has followed the broader trajectory of PLM development and low-resource adaptation, spanning general multilingual baselines and dedicated Lao-specific benchmarks.
 
 Early progress was marked by the introduction of multilingual BERT (mBERT) in 2019 \cite{devlin2019bert}, which provided the first massive transformer pre-training for over 100 languages, including zero-shot capabilities for low-resource scripts. However, a major limitation of mBERT remains its sub-optimal representation of Lao due to a shared vocabulary that assigns limited capacity to low-resource languages, often resulting in fragmented subword tokens for continuous scripts. This was partially addressed by XLM-RoBERTa (XLM-R) in 2020 \cite{conneau2020unsupervised}, which scaled up training data and refined cross-lingual representations. While XLM-R demonstrates significantly stronger zero-shot and few-shot performance, its primary limitation in the Lao context remains its generic pre-training objective, which does not explicitly account for the specific character boundaries or the noisy, informal code-mixing prevalent in modern digital communication.
 
@@ -172,60 +165,6 @@ The raw reviews were manually annotated with binary sentiment labels. Each revie
 
 To improve label consistency, the annotation followed a simple set of practical guidelines. Reviews expressing clearly favorable opinions toward an application, service quality, or user experience were marked as positive, whereas reviews expressing frustration, malfunction, dissatisfaction, or criticism were marked as negative. During dataset refinement, noisy, invalid, or suspicious samples were revisited through the cleaning pipeline described below so that only reliable sentiment instances were retained in the final corpus.
 
-\subsection{Graphetics and Tonogenesis in Lao}
-\label{subsec:graphetics_tonogenesis}
-
-For this benchmark, readers do not need a full historical account of Lao tonogenesis. What matters here is how modern Lao orthography is written and why that structure produces errors in short app reviews. The user-provided teaching material describes 33 consonants in current use: 27 core consonants and 6 compound consonants. The 27 core consonants are grouped into High, Middle, and Low classes, and these classes help determine tone in ordinary spelling \cite{lao_orthography_2019}. The same source states that modern Lao uses 28 vowels, many of which are written before, after, above, below, or around a base consonant rather than in a simple left-to-right sequence. For readers unfamiliar with Lao, this means that a word can look visually non-linear even when it is spelled correctly.
-
-The same teaching material lists four written tone marks and notes six tones in Lao, while linguistic descriptions further show that realized tone depends on consonant class, tone marking, and syllable structure \cite{lao_orthography_2019,pittayaporn2009phonology}. In practical NLP terms, a missing tone mark, a misplaced vowel, or a visually similar substitution may change the lexical identity of a word rather than introduce only superficial noise. This is why Lao-specific cleaning is necessary in our pipeline. Table~\ref{tab:lao_tonogenesis} gives representative written tone patterns used in school grammar, and Table~\ref{tab:lao_graphetics} summarizes the script properties that most directly affect preprocessing.
-
-\begin{table}[H]
-\centering
-\caption{Representative written tone patterns in Lao used in school grammar.}
-\footnotesize
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{|l|X|X|X|}
-\hline
-\textbf{Written cue} & \textbf{High-class example} & \textbf{Middle-class example} & \textbf{Low-class example} \\
-\hline
-No tone mark & {\tablelaofont ສາ} & {\tablelaofont ປາ} & {\tablelaofont ຊາ} \\
-\hline
-Mai Ek ({\tablelaofont ◌່}) & {\tablelaofont ສ່າ} & {\tablelaofont ປ່າ} & {\tablelaofont ຊ່າ} \\
-\hline
-Mai Tho ({\tablelaofont ◌້}) & {\tablelaofont ສ້າ} & {\tablelaofont ປ້າ} & {\tablelaofont ຊ້າ} \\
-\hline
-\end{tabularx}
-\par\smallskip\footnotesize
-\textbf{Note:} Modern Lao uses four written tone marks ({\tablelaofont ◌່, ◌້, ◌໊, ◌໋}), but the teaching material illustrates representative school-grammar patterns mainly through the forms shown above. The same source reports six tones overall in Lao.
-\label{tab:lao_tonogenesis}
-\end{table}
-
-
-\begin{table}[H]
-\centering
-\caption{What a non-Lao reader needs to know about Lao spelling for preprocessing.}
-\footnotesize
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{|p{0.20\textwidth}|X|p{0.28\textwidth}|}
-\hline
-\textbf{Feature} & \textbf{Plain explanation} & \textbf{Example} \\
-\hline
-Consonant inventory & Modern Lao uses 33 consonants in current teaching materials: 27 core consonants and 6 compound consonants. The 27 core consonants are grouped into High, Middle, and Low classes. & High: {\tablelaofont ຂ, ສ, ຖ}; Middle: {\tablelaofont ກ, ປ, ອ}; Low: {\tablelaofont ຄ, ຊ, ນ}; compound: {\tablelaofont ຫງ, ຫຍ, ໜ} \\
-\hline
-Vowel placement & Vowels are attached to a consonant base and may be written after, before, above, below, or around it. The visual order is therefore not always a simple left-to-right sequence. & After: {\tablelaofont ກາ}; before: {\tablelaofont ໄປ}; above: {\tablelaofont ມີ}; below: {\tablelaofont ພຸ}; around: {\tablelaofont ເມຍ, ເນີ, ເກົາ} \\
-\hline
-Syllable anchor & A written Lao syllable normally needs a consonant base. When a syllable begins with a vowel sound, the letter {\tablelaofont ອ} is commonly used as the carrier in writing. & {\tablelaofont ອິນ}, {\tablelaofont ໄອ} \\
-\hline
-Why it matters for NLP & Missing tone marks, misplaced vowels, or visually similar substitutions can change the word itself, not just its surface form. This creates tokenization and normalization errors in short app reviews. & See Table~\ref{tab:cleaning_errors} for real review examples. \\
-\hline
-\end{tabularx}
-\par\smallskip\footnotesize
-\textbf{Note:} The counts and examples in this table follow the user-provided Lao orthography teaching material and are included here only to explain the script properties most relevant to preprocessing.
-\label{tab:lao_graphetics}
-\end{table}
-
-
-
 \subsection{Data Preprocessing and Cleaning Pipeline}
 \label{subsec:data_preprocessing}
 
@@ -233,41 +172,7 @@ Before final training, the raw reviews were cleaned and filtered in several stag
 
 To assess label quality more efficiently, we trained a lightweight screening model and compared its predictions with the manual annotations. Samples that repeatedly agreed with their labels were retained, whereas mismatched cases were rechecked and many were removed. This step served as a practical filter for suspicious or low-quality reviews before the final benchmark experiments.
 
-We also used a separate 5-fold cross-validation auditing step for difficult cases during dataset cleaning. This step was part of data filtering only and is distinct from the 3-fold cross-validation used later for model evaluation. Reviews that were repeatedly misclassified across folds were treated as unstable, and many of them contained invalid Lao character patterns or meaningless text fragments. Table~\ref{tab:cleaning_errors} provides specific examples of the common script errors, lexical inconsistencies, and semantic noise identified through this systematic cleaning process, comparing noisy processed samples with their standard Lao corrections.
-
-\begin{table}[H]
-\centering
-\caption{Comparison of preprocessing results between Processed Data and Standard Lao, illustrating common Lao script errors identified during cleaning.}
-\small
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{|p{0.24\textwidth}|X|X|X|}
-\hline
-\rowcolor{gray!12}
-\textbf{Error Description} & \textbf{Processed Data} (\errorcue) & \textbf{Standard Lao} (\correctcue) & \textbf{English Meaning} \\
-\hline
-Vowel error \& missing a letter:\newline \linkcue{1} \errorcue\ {\textcolor{red!75!black}{\tablelaofont ຢຸ}} $\rightarrow$ \correctcue\ {\textcolor{blue!70!black}{\tablelaofont ຢູ່}}: missing long-vowel sign + tone mark & {\tablelaofont ກະດີ\textcolor{red!75!black}{ຢຸ}} \linkcue{1} & {\tablelaofont ກະດີ\textcolor{blue!70!black}{ຢູ່}} & it is good \\
-\hline
-Incorrect label \& character error:\newline \linkcue{2} \errorcue\ {\textcolor{red!75!black}{\tablelaofont ບໍ}} $\rightarrow$ \correctcue\ {\textcolor{blue!70!black}{\tablelaofont ບໍ່}}: missing tone mark; label mismatch & {\tablelaofont \textcolor{red!75!black}{ບໍ}ມີຫຍັງ} \linkcue{2} & {\tablelaofont \textcolor{blue!70!black}{ບໍ່}ມີຫຍັງ} & no problem \\
-\cline{2-4}
-\linkcue{3} \errorcue\ {\textcolor{red!75!black}{\tablelaofont ໃສ່}} $\rightarrow$ \correctcue\ {\textcolor{blue!70!black}{\tablelaofont ໃຊ້}}: wrong middle word; label mismatch & {\tablelaofont ພໍ\textcolor{red!75!black}{ໃສ່}ໄດ້} \linkcue{3} & {\tablelaofont ພໍ\textcolor{blue!70!black}{ໃຊ້}ໄດ້} & enough to use \\
-\cline{2-4}
-\linkcue{4} \errorcue\ {\textcolor{red!75!black}{\tablelaofont ໃດ້}} $\rightarrow$ \correctcue\ {\textcolor{blue!70!black}{\tablelaofont ໄດ້}}: wrong leading vowel sign; label mismatch & {\tablelaofont ຕິດຕັ້ງບໍ່\textcolor{red!75!black}{ໃດ້}} \linkcue{4} & {\tablelaofont ຕິດຕັ້ງບໍ່\textcolor{blue!70!black}{ໄດ້}} & cannot install \\
-\cline{2-4}
-\linkcue{5} \errorcue\ {\textcolor{red!75!black}{\tablelaofont ໄຈ}} $\rightarrow$ \correctcue\ {\textcolor{blue!70!black}{\tablelaofont ໃຈ}}: wrong leading vowel sign; label mismatch & {\tablelaofont ຂອບ\textcolor{red!75!black}{ໄຈ}} \linkcue{5} & {\tablelaofont ຂອບ\textcolor{blue!70!black}{ໃຈ}} & thank you \\
-\hline
-Has no semantic meaning:\newline \linkcue{6} \errorcue\ no valid Lao word sequence & {\tablelaofont \textcolor{red!75!black}{ພາສາພໍ່າໄພຍາຍຈາຍ່}} \linkcue{6} & & \\
-\cline{2-3}
-\linkcue{7} \errorcue\ punctuation and noise fragment & {\tablelaofont \textcolor{red!75!black}{. . ຜ. ວບໍ່.ບຜຊໃ}} \linkcue{7} & & \\
-\cline{2-3}
-\linkcue{8} \errorcue\ non-word string & {\tablelaofont \textcolor{red!75!black}{ອອ່ນສສືອ}} \linkcue{8} & & \\
-\cline{2-3}
-\linkcue{9} \errorcue\ non-word string & {\tablelaofont \textcolor{red!75!black}{ທາດດແພພະນ້ຳສສ}} \linkcue{9} & & \\
-\hline
-\end{tabularx}
-\par\smallskip\footnotesize
-\textbf{Note:} \errorcue\ marks the incorrect span in Processed Data, \correctcue\ marks the corrected span in Standard Lao, and teal index markers (e.g., \linkcue{1}) connect each description to the corresponding occurrence in the review text. The symbols remain informative even in grayscale printing, while the colors help readers scan the table faster.
-\label{tab:cleaning_errors}
-\end{table}
+We also used a separate 5-fold cross-validation auditing step for difficult cases during dataset cleaning. This step was part of data filtering only and is distinct from the 3-fold cross-validation used later for model evaluation. Reviews that were repeatedly misclassified across folds were treated as unstable, and many of them contained invalid Lao character patterns, lexical inconsistencies, or meaningless text fragments.
 
 
 After this filtering process, the remaining reviews formed the final dataset used for training and validation.
@@ -488,48 +393,26 @@ The macro-averaged scores reported in this paper are then
 where $c$ indexes a sentiment class and $C=2$ for the negative and positive labels. Here, $TP$, $TN$, $FP$, and $FN$ denote true positives, true negatives, false positives, and false negatives, respectively, while $TP_c$, $FP_c$, and $FN_c$ are the corresponding class-specific counts used to compute $P_c$ and $R_c$ for class $c$.
 
 \subsubsection{Implementation Details}
-The experiments use the final filtered Lao review dataset described in Section~\ref{subsec:dataset_statistics}. Logistic Regression, SVM, Decision Tree, and fixed-split TextCNN were trained on the same validation split as the fixed-split PLM runs, while 3-fold cross-validation was applied on the training partition for the PLMs and for TextCNN. The exact hyperparameters are listed in Table~\ref{tab:training_config}; the main difference across PLM runs is whether the full backbone is updated or only LoRA adapters are trained.
+The experiments use the final filtered Lao review dataset described in Section~\ref{subsec:dataset_statistics}. Logistic Regression, SVM, Decision Tree, and fixed-split TextCNN were trained on the same validation split as the fixed-split PLM runs, while 3-fold cross-validation was applied on the training partition for the PLMs and for TextCNN. The exact hyperparameters are listed in Table~\ref{tab:training_config}; the main difference across PLM runs is whether the full backbone is updated or only LoRA adapters are trained. Runtime metadata recorded across 14 experiment folders indicate a Tesla T4 GPU with 14.56 GB GPU memory, 12.67 GB RAM, and 1 physical CPU core (2 total cores).
 
 \begin{table}[H]
 \centering
 \caption{Training configuration used in the experiments.}
 \small
-\begin{tabular}{@{}ll@{}}
+\begin{tabular}{@{}p{0.30\textwidth}p{0.56\textwidth}@{}}
 \toprule
 \textbf{Component} & \textbf{Configuration} \\
 \midrule
-PLM epochs & 25 \\
-Batch size / eval batch size & 16 / 32 \\
-Maximum sequence length & 128 \\
-Learning rate & $1 \times 10^{-5}$ \\
-Weight decay & 0.01 \\
-Warmup ratio & 0.1 \\
+PLM setup & 25 epochs, max length 128, validation loss \\
+Batch sizes & train 16, eval 32 \\
+Optimization & lr $1 \times 10^{-5}$, weight decay 0.01, warmup 0.1 \\
 Cross-validation & Stratified $K=3$ \\
-LoRA setting & $r=16$, $\alpha=32$, dropout $=0.1$ \\
-TextCNN setting & Embedding 128, filters 128, kernels 3/4/5, dropout 0.3 \\
-Best-model criterion & Validation loss \\
-Baseline features & TF-IDF char $n$-grams (3-5), max 50,000 \\
+LoRA setting & $r=16$, $\alpha=32$, dropout 0.1 \\
+TextCNN setting & embedding 128, filters 128, kernels 3/4/5, dropout 0.3 \\
+Baseline features & TF-IDF char $n$-grams (3--5), max 50,000 \\
 \bottomrule
 \end{tabular}
 \label{tab:training_config}
-\end{table}
-
-\begin{table}[H]
-\centering
-\caption{Runtime environment recorded in the experiment artifacts.}
-\small
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Hardware item} & \textbf{Recorded value} \\
-\midrule
-CPU & 1 physical core / 2 total cores \\
-RAM & 12.67 GB \\
-GPU & Tesla T4 \\
-GPU memory & 14.56 GB \\
-Recorded hardware scope & 14 experiment folders \\
-\bottomrule
-\end{tabular}
-\label{tab:hardware_env}
 \end{table}
 
 \subsection{Results and Discussion}
@@ -751,20 +634,30 @@ From a deployment perspective, the results support a tiered selection strategy. 
 
 \begin{table}[H]
 \centering
-\caption{Efficiency comparison between Full Fine-tuning and LoRA.}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|l|l|r|r|r|r|r|}
+\caption{Efficiency comparison between full fine-tuning (FT) and LoRA.}
+\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{|p{0.20\textwidth}|p{0.07\textwidth}|r|r|r|r|r|}
 \hline
-\textbf{Model} & \textbf{Strategy} & \textbf{Trainable params} & \textbf{Trainable ratio} & \textbf{Avg. epoch time (s)} & \textbf{Total train time (s)} & \textbf{$F_1$-macro} \\
+\textbf{Model Family} & \textbf{Strat.} & \textbf{Params} & \textbf{Ratio} & \textbf{Epoch (s)} & \textbf{Total (min)} & \textbf{$F_1$} \\
 \hline
-XLM-RoBERTa & Full Fine-tuning & 278,045,186 & 1.0000 & 267.31 & 6682.66 & 0.9617 \\
-XLM-RoBERTa & LoRA & 1,476,866 & 0.0053 & 117.80 & 2945.07 & 0.9589 \\
-mBERT & Full Fine-tuning & 177,854,978 & 1.0000 & 205.82 & 5145.48 & 0.6057 \\
-mBERT & LoRA & 886,274 & 0.0050 & 116.92 & 2922.95 & 0.6048 \\
-mBERT-Lao & Full Fine-tuning & 124,647,170 & 1.0000 & 177.52 & 4438.10 & 0.9328 \\
-mBERT-Lao & LoRA & 1,476,866 & 0.0117 & 113.74 & 2843.53 & 0.9235 \\
+{\textbf{XLM-RoBERTa}}
+& FT   & 278.0M          & 1.0000          & 267.3          & 111.4          & \textbf{0.9617} \\
+\cline{2-7}
+& LoRA & 1.48M           & 0.0053          & 117.8          & 49.1           & 0.9589 \\
 \hline
-\end{tabular}}
+{\textbf{mBERT}}
+& FT   & 177.9M          & 1.0000          & 205.8          & 85.8           & 0.6057 \\
+\cline{2-7}
+& LoRA & \textbf{0.89M}  & \textbf{0.0050} & 116.9          & 48.7           & 0.6048 \\
+\hline
+{\textbf{mBERT-Lao}}
+& FT   & 124.6M          & 1.0000          & 177.5          & 74.0           & 0.9328 \\
+\cline{2-7}
+& LoRA & 1.48M           & 0.0117          & \textbf{113.7} & \textbf{47.4}  & 0.9235 \\
+\hline
+\end{tabular}
 \label{tab:efficiency}
 \end{table}
 
