@@ -5,6 +5,8 @@ data/raw/
 data/processed/
 data/interim/
 data/external/
+!data/train.csv
+!data/val.csv
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/interim/.gitkeep
